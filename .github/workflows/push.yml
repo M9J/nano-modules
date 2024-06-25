@@ -17,5 +17,5 @@ jobs:
       - name: Push build
         uses: JamesIves/github-pages-deploy-action@v4
         with:
-          folder: build
+          folder: dist
           branch: build
