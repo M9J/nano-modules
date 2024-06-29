@@ -2,9 +2,12 @@ export default class TodayDate {
   MODULE_NAME = "Today Date";
   MODULE_DESCRIPTION = "Prints today's date and time";
   MODULE_VERSION = "0.1";
-  MODULE_MAIN = () => this.todayDate();
+  MODULE_MAIN = (o) => this.todayDate(o);
 
-  todayDate() {
+  todayDate(o) {
+    setInterval(() => {
+      o(new Date().toLocaleString());
+    }, 1000);
     return new Date().toLocaleString();
   }
 }

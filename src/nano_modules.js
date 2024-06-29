@@ -30,6 +30,7 @@ if (nanoModules) {
   else
     nanoModulesModuleContainer.innerHTML =
       "<div class='nano_modules_no_modules'>No Modules found</div>";
+  let modid = 0;
   for (const module of nanoModules) {
     if (module) {
       const instance = new module();
@@ -43,7 +44,7 @@ if (nanoModules) {
       let moduleOutput = "";
       if (instance.MODULE_MAIN && typeof instance.MODULE_MAIN === "function") {
         try {
-          moduleOutput = await instance.MODULE_MAIN(moduleOutput);
+          moduleOutput = await instance.MODULE_MAIN(updateOutput(++modid));
         } catch (error) {
           moduleOutput = `<div class="nano_modules_module_error">${error.code}: ${error.message}</div>`;
         }
@@ -52,17 +53,25 @@ if (nanoModules) {
         moduleName,
         moduleDescription,
         moduleVersion,
-        moduleOutput
+        moduleOutput,
+        modid
       );
       nanoModulesModuleContainer.innerHTML += template;
     }
   }
 }
 
-function buildTemplate(name, description, version, output) {
+function buildTemplate(name, description, version, output, modid) {
   return `<div class="nano_modules_module">
       <div class="nano_module_name">${name} <span class="nano_module_version">v${version}</span></div>
       <div class="nano_module_description">${description}</div>
-      <div class="nano_module_output">${output}</div>
+      <div class="nano_module_output" id="mod_${modid}">${output}</div>
   </div>`;
+}
+
+function updateOutput(modid) {
+  return (newOutput) => {
+    const outputContainer = document.getElementById("mod_" + modid);
+    outputContainer.innerHTML = newOutput;
+  };
 }
