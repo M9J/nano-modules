@@ -26,6 +26,8 @@ async function getModuleIndex() {
     let NanoModulesIndex = [];
     if (process.env.NODE_ENV === "production") {
       NanoModulesIndex = await import("./nano_modules/index.js");
+    } else {
+      NanoModulesIndex = await import("./nano_modules/index.js");
     }
     return NanoModulesIndex;
   } catch (e) {

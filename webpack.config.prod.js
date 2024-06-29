@@ -1,16 +1,17 @@
 const path = require("path");
 const HtmlWebpackPlugin = require("html-webpack-plugin");
 const webpack = require("webpack");
+const CopyPlugin = require("copy-webpack-plugin");
 
 module.exports = {
-  mode: "development",
+  mode: "production",
   entry: {
     index: "./src/nano_modules.js",
-    print: "./src/NanoModules.js",
+    NanoModules: "./src/NanoModules.js",
   },
   devtool: "inline-source-map",
   devServer: {
-    static: "./dist",
+    static: "dist",
   },
   plugins: [
     new HtmlWebpackPlugin({
@@ -18,6 +19,9 @@ module.exports = {
     }),
     new webpack.DefinePlugin({
       "process.env.NODE_ENV": JSON.stringify("production"),
+    }),
+    new CopyPlugin({
+      patterns: [{ from: "./src/nano_modules", to: "nano_modules" }],
     }),
   ],
   output: {

@@ -1,16 +1,17 @@
 const path = require("path");
 const HtmlWebpackPlugin = require("html-webpack-plugin");
 const webpack = require("webpack");
+const CopyPlugin = require("copy-webpack-plugin");
 
 module.exports = {
   mode: "development",
   entry: {
     index: "./src/nano_modules.js",
-    print: "./src/NanoModules.js",
+    NanoModules: "./src/NanoModules.js",
   },
   devtool: "inline-source-map",
   devServer: {
-    static: "./dist",
+    static: "dist",
   },
   plugins: [
     new HtmlWebpackPlugin({
@@ -19,7 +20,10 @@ module.exports = {
     new webpack.DefinePlugin({
       "process.env.NODE_ENV": JSON.stringify("development"),
     }),
-  ],
+    new CopyPlugin({
+      patterns: [{ from: "./src/nano_modules", to: "nano_modules" }],
+    }),
+    ],
   output: {
     filename: "[name].bundle.js",
     path: path.resolve(__dirname, "dist"),
@@ -32,7 +36,7 @@ module.exports = {
         use: ["style-loader", "css-loader"],
       },
       {
-        test: /\.js$/,
+        test: /\.js$/i,
         exclude: /nano_modules/,
         use: [{ loader: "babel-loader" }],
       },
