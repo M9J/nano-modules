@@ -37,7 +37,7 @@ async function getModuleIndex() {
     } else {
       NanoModulesIndex = await import(
         /* webpackIgnore: true */
-        NANOMODULES_URL_DEV
+        NANOMODULES_URL_PROD
       );
     }
     return NanoModulesIndex;
