@@ -21,13 +21,24 @@ export default async function () {
   return NANOMODULES;
 }
 
+const NANOMODULES_URL_DEV = "./nano_modules/index.js";
+const NANOMODULES_URL_PROD =
+  "https://cdn.jsdelivr.net/gh/M9J/nano_modules@latest/index.js";
+
 async function getModuleIndex() {
   try {
     let NanoModulesIndex = [];
-    if (process.env.NODE_ENV === "production") {
-      NanoModulesIndex = await import("./nano_modules/index.js");
+    const IS_PRODUCTION = process.env.NODE_ENV === "production";
+    if (IS_PRODUCTION) {
+      NanoModulesIndex = await import(
+        /* webpackIgnore: true */
+        NANOMODULES_URL_PROD
+      );
     } else {
-      NanoModulesIndex = await import("./nano_modules/index.js");
+      NanoModulesIndex = await import(
+        /* webpackIgnore: true */
+        NANOMODULES_URL_DEV
+      );
     }
     return NanoModulesIndex;
   } catch (e) {

@@ -37,7 +37,7 @@ module.exports = {
       },
       {
         test: /\.js$/i,
-        exclude: /nano_modules/,
+        exclude: /src\/nano_modules/,
         use: [{ loader: "babel-loader" }],
       },
     ],
