@@ -4,5 +4,5 @@ import TodayDate from "./TodayDate/TodayDate.js";
 
 const INDEX = [Counter, TodayDate, HelloWorld];
 
-export default INDEX;
+export default [...INDEX];
 // export default [];
