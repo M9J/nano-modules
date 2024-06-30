@@ -63,9 +63,9 @@ if (nanoModules) {
 
 function buildTemplate(name, description, version, output, modid) {
   return `<div class="nano_modules_module">
-      <div class="nano_module_name">${name} <span class="nano_module_version">v${version}</span></div>
-      <div class="nano_module_description">${description}</div>
-      <div class="nano_module_output" id="mod_${modid}">${output}</div>
+      <div class="nano_module_name">Module Name: ${name} <span class="nano_module_version">v${version}</span></div>
+      <div class="nano_module_description">Module Description: ${description}</div>
+      <div class="nano_module_output">Output:<div class="nano_module_output_content" id="mod_${modid}">${output}</div></div>
   </div>`;
 }
 
