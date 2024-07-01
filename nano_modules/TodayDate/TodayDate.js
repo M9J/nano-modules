@@ -1,1 +1,0 @@
-export default class TodayDate{MODULE_NAME="Today's Date";MODULE_DESCRIPTION="Prints today's date and time";MODULE_VERSION="0.1";MODULE_MAIN=t=>this.todayDate(t);todayDate(t){return setInterval((()=>{t((new Date).toLocaleString())}),1e3),(new Date).toLocaleString()}}

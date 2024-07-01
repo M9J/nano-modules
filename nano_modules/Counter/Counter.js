@@ -1,1 +1,0 @@
-export default class Counter{MODULE_NAME="Counter";MODULE_DESCRIPTION="Counts starting from 0";MODULE_VERSION="0.1";MODULE_MAIN=t=>this.count(t);count(t){let e=0;return setInterval((()=>{t(++e)}),1e3),e}}
