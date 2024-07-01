@@ -22,22 +22,22 @@ export default async function () {
 }
 
 const NANOMODULES_URL_DEV = "./nano_modules/index.js";
-const NANOMODULES_URL_PROD1 =
+// const NANOMODULES_URL_PROD1 =
   "https://cdn.jsdelivr.net/gh/M9J/nano_modules/index.js";
 // const NANOMODULES_URL_PROD1a =
 //   "https://purge.jsdelivr.net/gh/M9J/nano_modules/index.js";
 // const NANOMODULES_URL_PROD2 =
 //   "https://cdn.statically.io/gh/M9J/nano_modules/main/index.js";
+const NANOMODULES_URL_PROD3 = "https://M9J.github.io/nano_modules/index.js";
 
 async function getModuleIndex() {
   try {
     let NanoModulesIndex = [];
     const IS_PRODUCTION = process.env.NODE_ENV === "production";
     if (IS_PRODUCTION) {
-      //await fetch(NANOMODULES_URL_PROD1a);
       NanoModulesIndex = await import(
         /* webpackIgnore: true */
-        NANOMODULES_URL_PROD1
+        NANOMODULES_URL_PROD3
       );
     } else {
       NanoModulesIndex = await import(
