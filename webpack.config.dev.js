@@ -16,14 +16,16 @@ module.exports = {
   plugins: [
     new HtmlWebpackPlugin({
       title: "nano_modules",
+      favicon: "assets/favicon.ico",
     }),
     new webpack.DefinePlugin({
       "process.env.NODE_ENV": JSON.stringify("development"),
     }),
     new CopyPlugin({
       patterns: [{ from: "./src/nano_modules", to: "nano_modules" }],
+      patterns: [{ from: "./assets", to: "assets" }],
     }),
-    ],
+  ],
   output: {
     filename: "[name].bundle.js",
     path: path.resolve(__dirname, "dist"),
