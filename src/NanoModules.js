@@ -34,7 +34,7 @@ async function getModuleIndex() {
     let NanoModulesIndex = [];
     const IS_PRODUCTION = process.env.NODE_ENV === "production";
     if (IS_PRODUCTION) {
-      await fetch(NANOMODULES_URL_PROD1a);
+      //await fetch(NANOMODULES_URL_PROD1a);
       NanoModulesIndex = await import(
         /* webpackIgnore: true */
         NANOMODULES_URL_PROD1
