@@ -16,6 +16,7 @@ body {
   right: 0;
   bottom: 0;
   left: 0;
+  background: #ddd;
 }
 
 .nano_modules_container {
@@ -40,7 +41,6 @@ body {
   grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
   grid-gap: 8px;
   padding: 8px;
-  background: #ddd;
 }
 
 .nano_modules_module {
