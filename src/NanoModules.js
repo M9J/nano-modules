@@ -22,13 +22,7 @@ export default async function () {
 }
 
 const NANOMODULES_URL_DEV = "./nano_modules/index.js";
-// const NANOMODULES_URL_PROD1 =
-//  "https://cdn.jsdelivr.net/gh/M9J/nano_modules/index.js";
-// const NANOMODULES_URL_PROD1a =
-//   "https://purge.jsdelivr.net/gh/M9J/nano_modules/index.js";
-// const NANOMODULES_URL_PROD2 =
-//   "https://cdn.statically.io/gh/M9J/nano_modules/main/index.js";
-const NANOMODULES_URL_PROD3 = "https://M9J.github.io/nano_modules/index.js";
+const NANOMODULES_URL_PROD = "https://M9J.github.io/nano_modules/index.js";
 
 async function getModuleIndex() {
   try {
@@ -37,7 +31,7 @@ async function getModuleIndex() {
     if (IS_PRODUCTION) {
       NanoModulesIndex = await import(
         /* webpackIgnore: true */
-        NANOMODULES_URL_PROD3
+        NANOMODULES_URL_PROD
       );
     } else {
       NanoModulesIndex = await import(
