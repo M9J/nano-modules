@@ -23,7 +23,7 @@ export default async function () {
 
 const NANOMODULES_URL_DEV = "./nano_modules/index.js";
 // const NANOMODULES_URL_PROD1 =
-  "https://cdn.jsdelivr.net/gh/M9J/nano_modules/index.js";
+//  "https://cdn.jsdelivr.net/gh/M9J/nano_modules/index.js";
 // const NANOMODULES_URL_PROD1a =
 //   "https://purge.jsdelivr.net/gh/M9J/nano_modules/index.js";
 // const NANOMODULES_URL_PROD2 =
