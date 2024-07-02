@@ -8,6 +8,10 @@ function component() {
   const title = document.createElement("div");
   title.classList.add("nano_modules_title");
   title.innerHTML = "nano_modules";
+  
+  const badgeA = document.createElement("img");
+  badgeA.src = "https://github.com/m9j/nano-modules/actions/workflows/actions.yml/badge.svg";
+  title.appendChild(badgeA);
 
   const modules = document.createElement("div");
   modules.classList.add("nano_modules_modules");
