@@ -57,6 +57,67 @@ body {
 .nano_modules_module_error {
   color: #f00;
 }
+
 .bold {
   font-weight: bolder;
+}
+
+.nano_module_output {
+  display: flex;
+  flex-direction: column;
+}
+
+.nano_module_pulse {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  padding: 8px;
+  margin-left: -8px;
+}
+
+.nano_module_output_restricted_scrollable {
+  max-height: 8vh;
+  overflow: auto;
+}
+
+.pulse {
+  display: inline-block;
+  width: 50%;
+  height: 5px;
+  background: goldenrod;
+  animation: pulsating ease-in-out 1s alternate infinite;
+}
+
+.pulse:nth-child(1) {
+  animation-delay: 0;
+}
+
+.pulse:nth-child(2) {
+  animation-delay: 0.25s;
+}
+
+.pulse:nth-child(3) {
+  animation-delay: 0.5s;
+}
+
+.pulse:nth-child(4) {
+  animation-delay: 0.75s;
+}
+
+.pulse:nth-child(5) {
+  animation-delay: 1s;
+}
+
+.hidden {
+  display: none;
+}
+
+@keyframes pulsating {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
 }

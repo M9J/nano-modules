@@ -49,6 +49,7 @@ function getTempPlaceholderModuleName(moduleName) {
 async function loadModule(module, modid) {
   let moduleName = getTempPlaceholderModuleName(module);
   let moduleDescription = "...";
+  let modulePulse = false;
   let moduleVersion = "...";
   let moduleOutput = "...";
   const templateLoading = buildTemplate(
@@ -68,10 +69,12 @@ async function loadModule(module, modid) {
   moduleDescription = instance.MODULE_DESCRIPTION
     ? instance.MODULE_DESCRIPTION
     : "-";
+  modulePulse = instance.MODULE_PULSE || false;
   moduleVersion = instance.MODULE_VERSION ? instance.MODULE_VERSION : "-";
   if (instance.MODULE_MAIN && typeof instance.MODULE_MAIN === "function") {
     try {
-      moduleOutput = await instance.MODULE_MAIN(updateOutput(modid));
+      const outputModifiers = createOutputModifiers(modid);
+      moduleOutput = await instance.MODULE_MAIN(outputModifiers);
     } catch (error) {
       moduleOutput = `<div class="nano_modules_module_error">${error.code}: ${error.message}</div>`;
     }
@@ -84,6 +87,11 @@ async function loadModule(module, modid) {
     moduleVersion;
   document.getElementById(`nano_module_${modid}_output`).innerHTML =
     moduleOutput;
+  if (modulePulse) {
+    document
+      .getElementById(`nano_module_${modid}_pulse`)
+      .classList.remove("hidden");
+  }
 }
 
 function buildTemplate(name, description, version, output, modid) {
@@ -98,22 +106,49 @@ function buildTemplate(name, description, version, output, modid) {
     <span id="nano_module_${modid}_description">${description}</span>
   </div>
   <div class="nano_module_version">
-    <span class="bold">Version:</span>
-    <span id="nano_module_${modid}_version">${version}</span>
+    <span class="bold">Version:</span> 
+    <span id="nano_module_${modid}_version">${version} </span>
+
   </div>
   <div class="nano_module_output">
-    <span class="bold">Output:</span>
-    <div id="nano_module_${modid}_output">${output}</div>
+    <span class="bold">Output:</span>     
+    <div id="nano_module_${modid}_pulse" class="nano_module_pulse hidden">
+      <span class="pulse"></span>
+      <span class="pulse"></span>
+      <span class="pulse"></span>
+      <span class="pulse"></span>
+      <span class="pulse"></span>
+</div>
   </div>
+  <div class="nano_module_output_restricted_scrollable" id="nano_module_${modid}_output">${output}</div>
 </div>
 `;
+}
+
+function createOutputModifiers(modid) {
+  return {
+    update: updateOutput(modid),
+    log: logOutput(modid),
+  };
 }
 
 function updateOutput(modid) {
   return (newOutput) => {
     const outputContainer = document.getElementById(
-      "nano_module_" + modid + "_output"
+      `nano_module_${modid}_output`
     );
     outputContainer.innerHTML = newOutput;
+  };
+}
+
+function logOutput(modid) {
+  return (newOutput) => {
+    const outputContainer = document.getElementById(
+      `nano_module_${modid}_output`
+    );
+    const logContainer = document.createElement("div");
+    logContainer.classList.add(`nano_module_log`);
+    logContainer.innerHTML = newOutput;
+    outputContainer.prepend(logContainer);
   };
 }
