@@ -1,8 +1,5 @@
-import Counter from "./Counter/Counter.js";
-import HelloWorld from "./HelloWorld/HelloWorld.js";
-import TodayDate from "./TodayDate/TodayDate.js";
-
-const INDEX = [Counter, TodayDate, HelloWorld];
-
-export default [...INDEX];
-// export default [];
+export default [
+  () => import("./Counter/Counter.js"),
+  () => import("./TodayDate/TodayDate.js"),
+  () => import("./HelloWorld/HelloWorld.js"),
+];
