@@ -22,7 +22,6 @@ module.exports = {
       "process.env.NODE_ENV": JSON.stringify("production"),
     }),
     new CopyPlugin({
-      patterns: [{ from: "./src/nano_modules", to: "nano_modules" }],
       patterns: [{ from: "./assets", to: "assets" }],
     }),
   ],
