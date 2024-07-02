@@ -8,10 +8,6 @@ function component() {
   const title = document.createElement("div");
   title.classList.add("nano_modules_title");
   title.innerHTML = "nano_modules";
-  
-  const badgeA = document.createElement("img");
-  badgeA.src = "https://github.com/m9j/nano-modules/actions/workflows/actions.yml/badge.svg";
-  title.appendChild(badgeA);
 
   const modules = document.createElement("div");
   modules.classList.add("nano_modules_modules");
@@ -20,6 +16,7 @@ function component() {
   container.appendChild(title);
   container.appendChild(modules);
 
+  container.appendChild(createFooter());
   return container;
 }
 
@@ -155,4 +152,36 @@ function logOutput(modid) {
     logContainer.innerHTML = newOutput;
     outputContainer.prepend(logContainer);
   };
+}
+
+function createFooter() {
+  const footer = document.createElement("div");
+  footer.classList.add("nano_modules_footer");
+
+  const BADGES = {
+    "nano-modules": {
+      build:
+        "https://github.com/M9J/nano-modules/actions/workflows/actions.yml/badge.svg",
+      deploy:
+        "https://github.com/M9J/nano-modules/actions/workflows/pages/pages-build-deployment/badge.svg",
+    },
+    nano_modules: {
+      deploy:
+        "https://github.com/M9J/nano_modules/actions/workflows/pages/pages-build-deployment/badge.svg",
+    },
+  };
+
+  footer.innerHTML = `
+  <div class="nano_modules_footer_row">
+    nano-modules/build: <img class="nano_modules_footer_badge" src="${BADGES["nano-modules"].build}"/>
+  </div>
+  <div class="nano_modules_footer_row">
+    nano-modules/deploy: <img class="nano_modules_footer_badge" src="${BADGES["nano-modules"].deploy}"/>
+  </div>
+  <div class="nano_modules_footer_row">
+    nano_modules/deploy: <img class="nano_modules_footer_badge" src="${BADGES.nano_modules.deploy}"/>
+  </div>
+  `;
+
+  return footer;
 }

@@ -16,7 +16,7 @@ body {
   right: 0;
   bottom: 0;
   left: 0;
-  background: #eee;
+  background: #000;
 }
 
 .nano_modules_container {
@@ -41,6 +41,7 @@ body {
   grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
   grid-gap: 8px;
   padding: 8px;
+  background: #eee;
 }
 
 .nano_modules_module {
@@ -111,6 +112,24 @@ body {
 
 .hidden {
   display: none;
+}
+
+.nano_modules_footer {
+  background: #000;
+  color: #fff;
+  padding: 8px;
+  display: flex;
+  flex-direction: column;
+}
+
+.nano_modules_footer_row {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+}
+
+.nano_modules_footer_badge {
+  margin-left: 8px;
 }
 
 @keyframes pulsating {
