@@ -166,6 +166,8 @@ function createFooter() {
         "https://github.com/M9J/nano-modules/actions/workflows/pages/pages-build-deployment/badge.svg",
     },
     nano_modules: {
+      build:
+        "https://github.com/M9J/nano_modules/actions/workflows/actions.yml/badge.svg",
       deploy:
         "https://github.com/M9J/nano_modules/actions/workflows/pages/pages-build-deployment/badge.svg",
     },
@@ -177,6 +179,9 @@ function createFooter() {
   </div>
   <div class="nano_modules_footer_row">
     nano-modules/deploy: <img class="nano_modules_footer_badge" src="${BADGES["nano-modules"].deploy}"/>
+  </div>
+  <div class="nano_modules_footer_row">
+    nano_modules/build: <img class="nano_modules_footer_badge" src="${BADGES.nano_modules.build}"/>
   </div>
   <div class="nano_modules_footer_row">
     nano_modules/deploy: <img class="nano_modules_footer_badge" src="${BADGES.nano_modules.deploy}"/>
