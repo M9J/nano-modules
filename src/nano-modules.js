@@ -168,9 +168,9 @@ function createFooter() {
   <div class="nano_modules_footer_row">
     nano-modules/deploy: <img class="nano_modules_footer_badge" src="${BADGES["nano-modules"].deploy}"/>
   </div>
-  <div class="nano_modules_footer_row">
+  <!-- <div class="nano_modules_footer_row">
     nano_modules/build: <img class="nano_modules_footer_badge" src="${BADGES.nano_modules.build}"/>
-  </div>
+  </div> -->
   <div class="nano_modules_footer_row">
     nano_modules/deploy: <img class="nano_modules_footer_badge" src="${BADGES.nano_modules.deploy}"/>
   </div>
