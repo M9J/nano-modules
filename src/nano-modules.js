@@ -76,7 +76,8 @@ async function loadModule(module, modid) {
   if (instance.MODULE_MAIN && typeof instance.MODULE_MAIN === "function") {
     try {
       const outputModifiers = createOutputModifiers(modid);
-      moduleOutput = await instance.MODULE_MAIN(outputModifiers);
+      moduleOutput = await instance.MODULE_MAIN(outputModifiers) || "";
+      
     } catch (error) {
       moduleOutput = `<div class="nano_modules_module_error">${error.code}: ${error.message}</div>`;
     }
