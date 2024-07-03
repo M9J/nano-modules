@@ -42,6 +42,8 @@ body {
   grid-gap: 8px;
   padding: 8px;
   background: #eee;
+  flex: 1;
+  grid-auto-rows: max-content;
 }
 
 .nano_modules_module {
@@ -119,7 +121,9 @@ body {
   color: #fff;
   padding: 8px;
   display: flex;
-  flex-direction: column;
+  gap: 8px;
+  flex-wrap: wrap;
+  justify-content: center;
 }
 
 .nano_modules_footer_row {
@@ -130,6 +134,7 @@ body {
 
 .nano_modules_footer_badge {
   margin-left: 8px;
+  max-height: 16px;
 }
 
 @keyframes pulsating {
