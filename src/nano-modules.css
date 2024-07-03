@@ -122,18 +122,18 @@ body {
 
 @keyframes pulse {
   0% {
-    background: grey;
+    background: silver;
   }
   25% {
     background: greenyellow;
   }
   50% {
-    background: grey;
+    background: silver;
   }
   75% {
     background: goldenrod;
   }
   100% {
-    background: grey;
+    background: silver;
   }
 }
