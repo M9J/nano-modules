@@ -130,12 +130,12 @@ function buildTemplate(name, description, version, output, modid) {
 
 function createOutputModifiers(modid) {
   return {
-    update: updateOutput(modid),
-    log: logOutput(modid),
+    print: print(modid),
+    printLineBefore: printLineBefore(modid),
   };
 }
 
-function updateOutput(modid) {
+function print(modid) {
   return (newOutput) => {
     const outputContainer = document.getElementById(
       `nano_module_${modid}_output`
@@ -144,7 +144,7 @@ function updateOutput(modid) {
   };
 }
 
-function logOutput(modid) {
+function printLineBefore(modid) {
   return (newOutput) => {
     const outputContainer = document.getElementById(
       `nano_module_${modid}_output`

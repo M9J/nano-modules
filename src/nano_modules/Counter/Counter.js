@@ -8,7 +8,7 @@ export default class Counter {
   count(o) {
     let c = 0;
     setInterval(() => {
-      o.update(++c);
+      o.print(++c);
     }, 1000);
     return c;
   }
