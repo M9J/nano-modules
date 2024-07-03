@@ -90,6 +90,11 @@ body {
   display: none;
 }
 
+.expander {
+  display: inline-block;
+  width: 100%;
+}
+
 .nano_modules_footer {
   background: #000;
   color: #fff;

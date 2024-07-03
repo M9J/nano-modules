@@ -108,16 +108,20 @@ function buildTemplate(name, description, version, output, modid) {
     <span class="bold">Description:</span>
     <span id="nano_module_${modid}_description">${description}</span>
   </div>
+  <!--
   <div class="nano_module_version">
     <span class="bold">Version:</span>
     <span id="nano_module_${modid}_version">${version} </span>
-  </div>
+  </div> 
+  -->
   <div class="nano_module_output">
     <span class="bold">Output:</span>
     &nbsp;<span
       class="pulse hidden"
       id="nano_module_${modid}_pulse"
-    ></span>
+    ></span><span class="expander">&nbsp;</span>
+    <span class="bold">Version:</span>
+    <span id="nano_module_${modid}_version">${version} </span>
   </div>
   <div
     class="nano_module_output_restricted_scrollable"
