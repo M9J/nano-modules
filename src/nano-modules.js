@@ -1,5 +1,6 @@
-import "./nano_modules.css";
+import "./nano-modules.css";
 import NanoModules from "./NanoModules";
+import { BADGES } from "./github-helper";
 
 function component() {
   const container = document.createElement("div");
@@ -107,21 +108,22 @@ function buildTemplate(name, description, version, output, modid) {
     <span id="nano_module_${modid}_description">${description}</span>
   </div>
   <div class="nano_module_version">
-    <span class="bold">Version:</span> 
+    <span class="bold">Version:</span>
     <span id="nano_module_${modid}_version">${version} </span>
-
   </div>
   <div class="nano_module_output">
-    <span class="bold">Output:</span>     
-    <div id="nano_module_${modid}_pulse" class="nano_module_pulse hidden">
-      <span class="pulse"></span>
-      <span class="pulse"></span>
-      <span class="pulse"></span>
-      <span class="pulse"></span>
-      <span class="pulse"></span>
-</div>
+    <span class="bold">Output:</span>
+    &nbsp;<span
+      class="pulse hidden"
+      id="nano_module_${modid}_pulse"
+    ></span>
   </div>
-  <div class="nano_module_output_restricted_scrollable" id="nano_module_${modid}_output">${output}</div>
+  <div
+    class="nano_module_output_restricted_scrollable"
+    id="nano_module_${modid}_output"
+  >
+    ${output}
+  </div>
 </div>
 `;
 }
@@ -157,21 +159,6 @@ function logOutput(modid) {
 function createFooter() {
   const footer = document.createElement("div");
   footer.classList.add("nano_modules_footer");
-
-  const BADGES = {
-    "nano-modules": {
-      build:
-        "https://github.com/M9J/nano-modules/actions/workflows/actions.yml/badge.svg",
-      deploy:
-        "https://github.com/M9J/nano-modules/actions/workflows/pages/pages-build-deployment/badge.svg",
-    },
-    nano_modules: {
-      build:
-        "https://github.com/M9J/nano_modules/actions/workflows/actions.yml/badge.svg",
-      deploy:
-        "https://github.com/M9J/nano_modules/actions/workflows/pages/pages-build-deployment/badge.svg",
-    },
-  };
 
   footer.innerHTML = `
   <div class="nano_modules_footer_row">

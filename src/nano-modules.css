@@ -34,6 +34,7 @@ body {
   color: #fff;
   position: sticky;
   top: 0;
+  z-index: 1;
 }
 
 .nano_modules_modules {
@@ -67,16 +68,8 @@ body {
 
 .nano_module_output {
   display: flex;
-  flex-direction: column;
-}
-
-.nano_module_pulse {
-  display: flex;
+  flex-direction: row;
   align-items: center;
-  justify-content: space-between;
-  width: 100%;
-  padding: 8px;
-  margin-left: -8px;
 }
 
 .nano_module_output_restricted_scrollable {
@@ -86,30 +79,11 @@ body {
 
 .pulse {
   display: inline-block;
-  width: 50%;
-  height: 5px;
-  background: goldenrod;
-  animation: pulsating ease-in-out 1s alternate infinite;
-}
-
-.pulse:nth-child(1) {
-  animation-delay: 0;
-}
-
-.pulse:nth-child(2) {
-  animation-delay: 0.25s;
-}
-
-.pulse:nth-child(3) {
-  animation-delay: 0.5s;
-}
-
-.pulse:nth-child(4) {
-  animation-delay: 0.75s;
-}
-
-.pulse:nth-child(5) {
-  animation-delay: 1s;
+  width: 16px;
+  height: 8px;
+  border-radius: 8px;
+  background: grey;
+  animation: pulse ease-in-out 1s infinite;
 }
 
 .hidden {
@@ -143,5 +117,23 @@ body {
   }
   100% {
     opacity: 1;
+  }
+}
+
+@keyframes pulse {
+  0% {
+    background: grey;
+  }
+  25% {
+    background: greenyellow;
+  }
+  50% {
+    background: grey;
+  }
+  75% {
+    background: goldenrod;
+  }
+  100% {
+    background: grey;
   }
 }

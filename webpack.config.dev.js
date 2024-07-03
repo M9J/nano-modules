@@ -6,7 +6,7 @@ const CopyPlugin = require("copy-webpack-plugin");
 module.exports = {
   mode: "development",
   entry: {
-    index: "./src/nano_modules.js",
+    index: "./src/nano-modules.js",
     NanoModules: "./src/NanoModules.js",
   },
   devtool: "inline-source-map",
@@ -15,7 +15,7 @@ module.exports = {
   },
   plugins: [
     new HtmlWebpackPlugin({
-      title: "nano_modules",
+      title: "nano-modules",
       favicon: "assets/favicon.ico",
     }),
     new webpack.DefinePlugin({
