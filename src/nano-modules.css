@@ -73,7 +73,7 @@ body {
 }
 
 .nano_module_output_restricted_scrollable {
-  max-height: 100px;
+  max-height: 90px;
   overflow: auto;
 }
 
