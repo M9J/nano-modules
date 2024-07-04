@@ -169,7 +169,12 @@ function createChannel() {
     send: ({ message, to, from }) => {
       const receiver = receivers[to];
       if (!receiver) console.log("Receiver not found!");
-      else receiver({ message, to, from });
+      else {
+        let tmr = setTimeout(() => {
+          clearTimeout(tmr);
+          receiver({ message, to, from });
+        },1000);
+      }
     },
     onReceive: (to, onReceiveFn) => {
       if (!receivers[to]) {
