@@ -6,7 +6,7 @@ export default class Logger {
   MODULE_MAIN = (o) => {
     let line = 0;
     setInterval(() => {
-      o.printLineBefore(`Log line ${++line}`);
+      o.printLine(`Log line ${++line}`);
     }, 1000);
   };
 }

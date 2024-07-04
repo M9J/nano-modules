@@ -76,8 +76,7 @@ async function loadModule(module, modid) {
   if (instance.MODULE_MAIN && typeof instance.MODULE_MAIN === "function") {
     try {
       const outputModifiers = createOutputModifiers(modid);
-      moduleOutput = await instance.MODULE_MAIN(outputModifiers) || "";
-      
+      moduleOutput = (await instance.MODULE_MAIN(outputModifiers)) || "";
     } catch (error) {
       moduleOutput = `<div class="nano_modules_module_error">${error.code}: ${error.message}</div>`;
     }
@@ -133,10 +132,13 @@ function buildTemplate(name, description, version, output, modid) {
 `;
 }
 
+const channel = createChannel();
+
 function createOutputModifiers(modid) {
   return {
     print: print(modid),
-    printLineBefore: printLineBefore(modid),
+    printLine: printLine(modid),
+    channel: channel,
   };
 }
 
@@ -149,7 +151,7 @@ function print(modid) {
   };
 }
 
-function printLineBefore(modid) {
+function printLine(modid) {
   return (newOutput) => {
     const outputContainer = document.getElementById(
       `nano_module_${modid}_output`
@@ -158,6 +160,22 @@ function printLineBefore(modid) {
     logContainer.classList.add(`nano_module_log`);
     logContainer.innerHTML = newOutput;
     outputContainer.prepend(logContainer);
+  };
+}
+
+function createChannel() {
+  const receivers = {};
+  return {
+    send: ({ message, to, from }) => {
+      const receiver = receivers[to];
+      if (!receiver) console.log("Receiver not found!");
+      else receiver({ message, to, from });
+    },
+    onReceive: (to, onReceiveFn) => {
+      if (!receivers[to]) {
+        receivers[to] = onReceiveFn;
+      }
+    },
   };
 }
 

@@ -7,7 +7,7 @@ export default class TodayDate {
 
   todayDate(o) {
     setInterval(() => {
-      o.printLineBefore(new Date().toLocaleString());
+      o.printLine(new Date().toLocaleString());
     }, 1000);
     return new Date().toLocaleString();
   }
