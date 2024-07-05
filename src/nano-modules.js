@@ -166,13 +166,13 @@ function printLine(modid) {
 function createChannel() {
   const receivers = {};
   return {
-    send: ({ message, to, from }) => {
+    send: ({ message, data, to, from }) => {
       let tmr = setTimeout(() => {
         clearTimeout(tmr);
         const receiver = receivers[to];
         if (!receiver) console.log("Receiver not found!");
         else {
-          receiver({ message, to, from });
+          receiver({ message, data, to, from });
         }
       },10);
     },
