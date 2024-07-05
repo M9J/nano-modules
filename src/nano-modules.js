@@ -174,7 +174,7 @@ function createChannel() {
         else {
           receiver({ message, data, to, from });
         }
-      },10);
+      },1000);
     },
     onReceive: (to, onReceiveFn) => {
       if (!receivers[to]) {
