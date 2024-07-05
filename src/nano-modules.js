@@ -53,7 +53,7 @@ async function loadModule(module, modid) {
   let moduleDescription = "...";
   let modulePulse = false;
   let moduleVersion = "...";
-  let moduleOutput = "...";
+  let moduleOutput = "";
   const templateLoading = buildTemplate(
     moduleName,
     moduleDescription,
@@ -73,12 +73,18 @@ async function loadModule(module, modid) {
     : "-";
   modulePulse = instance.MODULE_PULSE || false;
   moduleVersion = instance.MODULE_VERSION ? instance.MODULE_VERSION : "-";
+  const moduleMailId = instance.MODULE_MAIL_ID || null;
+  const moduleMailHandler = instance.MODULE_MAIL_HANDLER || null;
+  instance.MODULE_OUTPUT = createOutputModifiers(modid);
+  if (moduleMailId && moduleMailHandler) {
+    mail.onReceive(moduleMailId, moduleMailHandler);
+    instance.MODULE_MAIL = { send: mail.send };
+  }
   if (instance.MODULE_MAIN && typeof instance.MODULE_MAIN === "function") {
     try {
-      const outputModifiers = createOutputModifiers(modid);
-      moduleOutput = (await instance.MODULE_MAIN(outputModifiers)) || "";
+      await instance.MODULE_MAIN();
     } catch (error) {
-      moduleOutput = `<div class="nano_modules_module_error">${error.code}: ${error.message}</div>`;
+      instance.MODULE_OUTPUT.print(`ERROR: ${error.code}: ${error.message}`);
     }
   }
 
@@ -87,8 +93,6 @@ async function loadModule(module, modid) {
     moduleDescription;
   document.getElementById(`nano_module_${modid}_version`).innerHTML =
     moduleVersion;
-  document.getElementById(`nano_module_${modid}_output`).innerHTML =
-    moduleOutput;
   if (modulePulse) {
     document
       .getElementById(`nano_module_${modid}_pulse`)
@@ -107,12 +111,6 @@ function buildTemplate(name, description, version, output, modid) {
     <span class="bold">Description:</span>
     <span id="nano_module_${modid}_description">${description}</span>
   </div>
-  <!--
-  <div class="nano_module_version">
-    <span class="bold">Version:</span>
-    <span id="nano_module_${modid}_version">${version} </span>
-  </div> 
-  -->
   <div class="nano_module_output">
     <span class="bold">Output:</span>
     &nbsp;<span
@@ -132,13 +130,12 @@ function buildTemplate(name, description, version, output, modid) {
 `;
 }
 
-const channel = createChannel();
+const mail = createMail();
 
 function createOutputModifiers(modid) {
   return {
     print: print(modid),
     printLine: printLine(modid),
-    channel: channel,
   };
 }
 
@@ -163,25 +160,21 @@ function printLine(modid) {
   };
 }
 
-function createChannel() {
-  const receivers = {};
-  return {
-    send: ({ message, data, to, from }) => {
-      let tmr = setTimeout(() => {
-        clearTimeout(tmr);
-        const receiver = receivers[to];
-        if (!receiver) console.log("Receiver not found!");
-        else {
-          receiver({ message, data, to, from });
-        }
-      },1000);
-    },
-    onReceive: (to, onReceiveFn) => {
-      if (!receivers[to]) {
-        receivers[to] = onReceiveFn;
-      }
-    },
+const MAIL_SEND_DELAY = 1000;
+
+function createMail() {
+  const recipients = {};
+  const onReceive = (mailId, mailHandler) => {
+    if (!recipients[mailId]) recipients[mailId] = mailHandler;
   };
+  const send = (mail) => {
+    let tmr = setTimeout(() => {
+      clearTimeout(tmr);
+      if (!recipients[mail.to]) console.log(`Recipient not found: ${mail.to}`);
+      else recipients[mail.to](mail);
+    }, MAIL_SEND_DELAY);
+  };
+  return { onReceive, send };
 }
 
 function createFooter() {
@@ -189,18 +182,20 @@ function createFooter() {
   footer.classList.add("nano_modules_footer");
 
   footer.innerHTML = `
-  <div class="nano_modules_footer_row">
-    nano-modules/build: <img class="nano_modules_footer_badge" src="${BADGES["nano-modules"].build}"/>
-  </div>
-  <div class="nano_modules_footer_row">
-    nano-modules/deploy: <img class="nano_modules_footer_badge" src="${BADGES["nano-modules"].deploy}"/>
-  </div>
-  <!-- <div class="nano_modules_footer_row">
-    nano_modules/build: <img class="nano_modules_footer_badge" src="${BADGES.nano_modules.build}"/>
-  </div> -->
-  <div class="nano_modules_footer_row">
-    nano_modules/deploy: <img class="nano_modules_footer_badge" src="${BADGES.nano_modules.deploy}"/>
-  </div>
+<div class="nano_modules_footer_row">
+  <a class="github-badge" href="https://github.com/m9j/nano-modules/actions">
+    <div class="github-badge-label">nano-modules</div>
+    <div class="github-badge-stage">ACTIONS</div>
+    <div class="github-badge-status">PASSED</div>
+  </a>
+</div>
+<div class="nano_modules_footer_row">
+  <a class="github-badge" href="https://github.com/m9j/nano_modules/actions">
+    <div class="github-badge-label">nano_modules</div>
+    <div class="github-badge-stage">ACTIONS</div>
+    <div class="github-badge-status">PASSED</div>
+  </a>
+</div>
   `;
 
   return footer;

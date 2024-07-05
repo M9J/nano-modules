@@ -116,6 +116,32 @@ body {
   max-height: 16px;
 }
 
+.github-badge {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 0px;
+  overflow: hidden;
+  border: 1px solid #333;
+  text-decoration: none;
+  color: #fff;
+}
+
+.github-badge-label {
+  padding: 4px 8px;
+  background-color: #222;
+}
+
+.github-badge-stage {
+  padding: 4px 8px;
+  background-color: #333;
+}
+
+.github-badge-status {
+  padding: 4px 8px;
+  background-color: green;
+}
+
 @keyframes pulsating {
   0% {
     opacity: 0;
