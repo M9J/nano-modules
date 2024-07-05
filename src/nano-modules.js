@@ -160,7 +160,7 @@ function printLine(modid) {
   };
 }
 
-const MAIL_SEND_DELAY = 10;
+const MAIL_SEND_DELAY = 100;
 
 function createMail() {
   const recipients = {};
