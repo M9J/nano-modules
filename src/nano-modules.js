@@ -1,54 +1,31 @@
 import "./nano-modules.css";
-import NanoModules from "./NanoModules";
-import { BADGES } from "./github-helper";
-
-function component() {
-  const container = document.createElement("div");
-  container.classList.add("nano_modules_container");
-
-  const title = document.createElement("div");
-  title.classList.add("nano_modules_title");
-  title.innerHTML = "nano_modules";
-
-  const modules = document.createElement("div");
-  modules.classList.add("nano_modules_modules");
-  modules.id = "nano_modules_modules";
-
-  container.appendChild(title);
-  container.appendChild(modules);
-
-  container.appendChild(createFooter());
-  return container;
-}
+import NanoModules from "./app/NanoModules";
 
 document.body.appendChild(component());
+loadNanoModules();
 
-const nanoModules = await NanoModules();
-if (nanoModules) {
-  const nanoModulesModuleContainer = document.getElementById(
-    "nano_modules_modules"
-  );
-  if (nanoModules.length > 0) nanoModulesModuleContainer.innerHTML = "";
-  else
-    nanoModulesModuleContainer.innerHTML =
-      "<div class='nano_modules_no_modules'>No Modules found</div>";
-  for (const [modid, module] of nanoModules.entries()) {
-    if (module) {
-      loadModule(module, modid);
+const nanoMetaModules = [];
+
+async function loadNanoModules() {
+  const nanoModules = await NanoModules();
+  if (nanoModules) {
+    const nanoModulesModuleContainer = document.getElementById(
+      "nano_modules_modules"
+    );
+    if (nanoModules.length > 0) nanoModulesModuleContainer.innerHTML = "";
+    else
+      nanoModulesModuleContainer.innerHTML =
+        "<div class='nano_modules_no_modules'>No Modules found</div>";
+    for (const [modid, module] of nanoModules.entries()) {
+      if (module) await setupMetaModule(module, modid);
+    }
+    for (const module of nanoMetaModules) {
+      if (module) await execModule(module);
     }
   }
 }
 
-function getTempPlaceholderModuleName(moduleName) {
-  if (moduleName)
-    return moduleName
-      .toString()
-      .replaceAll("() => import(", "")
-      .replaceAll(")", "")
-      .replaceAll('"', "");
-}
-
-async function loadModule(module, modid) {
+async function setupMetaModule(module, modid) {
   let moduleName = getTempPlaceholderModuleName(module);
   let moduleDescription = "...";
   let modulePulse = false;
@@ -80,14 +57,6 @@ async function loadModule(module, modid) {
     mail.onReceive(moduleMailId, moduleMailHandler);
     instance.MODULE_MAIL = { send: mail.send };
   }
-  if (instance.MODULE_MAIN && typeof instance.MODULE_MAIN === "function") {
-    try {
-      await instance.MODULE_MAIN();
-    } catch (error) {
-      instance.MODULE_OUTPUT.print(`ERROR: ${error.code}: ${error.message}`);
-    }
-  }
-
   document.getElementById(`nano_module_${modid}_name`).innerHTML = moduleName;
   document.getElementById(`nano_module_${modid}_description`).innerHTML =
     moduleDescription;
@@ -98,34 +67,76 @@ async function loadModule(module, modid) {
       .getElementById(`nano_module_${modid}_pulse`)
       .classList.remove("hidden");
   }
+  instance.MODULE_ID = modid;
+  nanoMetaModules.push(instance);
+}
+
+async function execModule(module) {
+  if (module.MODULE_MAIN && typeof module.MODULE_MAIN === "function") {
+    try {
+      await module.MODULE_MAIN();
+    } catch (error) {
+      module.MODULE_OUTPUT.print(`ERROR: ${error.code}: ${error.message}`);
+    }
+  }
+}
+
+function getTempPlaceholderModuleName(moduleName) {
+  if (moduleName)
+    return moduleName
+      .toString()
+      .replaceAll("() => import(", "")
+      .replaceAll(")", "")
+      .replaceAll('"', "");
+}
+
+function component() {
+  const container = document.createElement("div");
+  container.classList.add("nano_modules_container");
+
+  const title = document.createElement("div");
+  title.classList.add("nano_modules_title");
+  title.innerHTML = "NanoModules";
+
+  const modules = document.createElement("div");
+  modules.classList.add("nano_modules_modules");
+  modules.id = "nano_modules_modules";
+
+  container.appendChild(title);
+  container.appendChild(modules);
+
+  container.appendChild(createFooter());
+  return container;
 }
 
 function buildTemplate(name, description, version, output, modid) {
   return `
 <div class="nano_modules_module" id="nano_module_${modid}">
-  <div class="nano_module_name">
-    <span class="bold">Name:</span>
-    <span id="nano_module_${modid}_name">${name}</span>
-  </div>
-  <div class="nano_module_description">
-    <span class="bold">Description:</span>
-    <span id="nano_module_${modid}_description">${description}</span>
-  </div>
-  <div class="nano_module_output">
-    <span class="bold">Output:</span>
-    &nbsp;<span
-      class="pulse hidden"
-      id="nano_module_${modid}_pulse"
-    ></span><span class="expander">&nbsp;</span>
-    <span class="bold">Version:</span>
-    <span id="nano_module_${modid}_version">${version} </span>
-  </div>
-  <div
-    class="nano_module_output_restricted_scrollable"
-    id="nano_module_${modid}_output"
-  >
-    ${output}
-  </div>
+<div class="nano_module_name">
+<span class="bold">Name:</span>
+<span id="nano_module_${modid}_name">${name}</span>
+</div>
+<div class="nano_module_description">
+<span class="bold">Description:</span>
+<span id="nano_module_${modid}_description">${description}</span>
+</div>
+<div class="nano_module_output">
+<span class="bold">Output:</span>
+<span id="nano_module_${modid}_pulse" class="pulse hidden">
+&nbsp;<span class="pulse_dot"></span> 
+&nbsp;<span class="pulse_dot"></span>
+&nbsp;<span class="pulse_dot"></span>
+</span>
+<span class="expander">&nbsp;</span>
+<span class="bold">Version:</span>
+<span id="nano_module_${modid}_version">${version} </span>
+</div>
+<div
+class="nano_module_output_restricted_scrollable"
+id="nano_module_${modid}_output"
+>
+${output}
+</div>
 </div>
 `;
 }
@@ -153,14 +164,11 @@ function printLine(modid) {
     const outputContainer = document.getElementById(
       `nano_module_${modid}_output`
     );
-    const logContainer = document.createElement("div");
-    logContainer.classList.add(`nano_module_log`);
-    logContainer.innerHTML = newOutput;
-    outputContainer.prepend(logContainer);
+    outputContainer.prepend(newOutput, document.createElement("br"));
   };
 }
 
-const MAIL_SEND_DELAY = 1000;
+const MAIL_SEND_DELAY = 0;
 
 function createMail() {
   const recipients = {};
@@ -182,20 +190,20 @@ function createFooter() {
   footer.classList.add("nano_modules_footer");
 
   footer.innerHTML = `
-<div class="nano_modules_footer_row">
-  <a class="github-badge" href="https://github.com/m9j/nano-modules/actions">
-    <div class="github-badge-label">nano-modules</div>
-    <div class="github-badge-stage">ACTIONS</div>
-    <div class="github-badge-status">PASSED</div>
-  </a>
-</div>
-<div class="nano_modules_footer_row">
-  <a class="github-badge" href="https://github.com/m9j/nano_modules/actions">
-    <div class="github-badge-label">nano_modules</div>
-    <div class="github-badge-stage">ACTIONS</div>
-    <div class="github-badge-status">PASSED</div>
-  </a>
-</div>
+    <div class="nano_modules_footer_row">
+      <a class="github-badge" href="https://github.com/m9j/nano-modules/actions">
+        <div class="github-badge-label">nano-modules</div>
+        <div class="github-badge-stage">ACTIONS</div>
+        <div class="github-badge-status">PASSED</div>
+      </a>
+    </div>
+    <div class="nano_modules_footer_row">
+      <a class="github-badge" href="https://github.com/m9j/nano_modules/actions">
+        <div class="github-badge-label">nano_modules</div>
+        <div class="github-badge-stage">ACTIONS</div>
+        <div class="github-badge-status">PASSED</div>
+      </a>
+    </div>
   `;
 
   return footer;

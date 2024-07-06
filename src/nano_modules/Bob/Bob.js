@@ -5,10 +5,10 @@ export default class Bob {
   MODULE_PULSE = true;
   MODULE_MAIL_ID = "bob@nano.mods";
   MODULE_MAIL_HANDLER = ({ message, data, from }) => {
+    this.MODULE_OUTPUT.printLine(`${from}: ${message}: ${data.value}`);
     if (message === "+3") {
       data.value = data.value + 3;
     }
-    this.MODULE_OUTPUT.printLine(`${from}: ${message}: ${data.value}`);
     this.MODULE_MAIL.send({
       from: this.MODULE_MAIL_ID,
       to: "alice@nano.mods",

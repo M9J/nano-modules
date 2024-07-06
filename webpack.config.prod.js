@@ -7,7 +7,6 @@ module.exports = {
   mode: "production",
   entry: {
     index: "./src/nano-modules.js",
-    NanoModules: "./src/NanoModules.js",
   },
   devtool: "inline-source-map",
   devServer: {

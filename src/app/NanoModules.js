@@ -21,7 +21,7 @@ export default async function () {
   return NANOMODULES;
 }
 
-const NANOMODULES_URL_DEV = "./nano_modules/index.js";
+const NANOMODULES_URL_DEV = "../nano_modules/index.js";
 const NANOMODULES_URL_PROD = "https://M9J.github.io/nano_modules/index.js";
 
 async function getModuleIndex() {

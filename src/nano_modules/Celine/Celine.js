@@ -5,10 +5,10 @@ export default class Celine {
   MODULE_PULSE = true;
   MODULE_MAIL_ID = "celine@nano.mods";
   MODULE_MAIL_HANDLER = ({ message, data, from }) => {
+    this.MODULE_OUTPUT.printLine(`${from}: ${message}: ${data.value}`);
     if (message === "+2") {
       data.value = data.value + 2;
     }
-    this.MODULE_OUTPUT.printLine(`${from}: ${message}: ${data.value}`);
     this.MODULE_MAIL.send({
       from: this.MODULE_MAIL_ID,
       to: "bob@nano.mods",

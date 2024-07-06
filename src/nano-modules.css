@@ -78,12 +78,21 @@ body {
 }
 
 .pulse {
+  display: flex;
+  align-items: center;
+}
+
+.pulse_dot {
   display: inline-block;
   width: 16px;
   height: 8px;
   border-radius: 8px;
-  background: grey;
+  background: silver;
   animation: pulse ease-in-out 1s infinite;
+}
+
+.pulse_dot:nth-child(even) {
+  animation-direction: reverse;
 }
 
 .hidden {
@@ -142,27 +151,18 @@ body {
   background-color: green;
 }
 
-@keyframes pulsating {
-  0% {
-    opacity: 0;
-  }
-  100% {
-    opacity: 1;
-  }
-}
-
 @keyframes pulse {
   0% {
     background: silver;
   }
   25% {
-    background: greenyellow;
+    background: goldenrod;
   }
   50% {
-    background: silver;
+    background-color: silver;
   }
   75% {
-    background: goldenrod;
+    background-color: greenyellow;
   }
   100% {
     background: silver;
