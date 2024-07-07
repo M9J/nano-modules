@@ -1,6 +1,6 @@
 export default class Bob {
   MODULE_NAME = "Bob";
-  MODULE_DESCRIPTION = "Sends message to Alice";
+  MODULE_DESCRIPTION = "Sends message to Alice.";
   MODULE_VERSION = "1.0";
   MODULE_PULSE = true;
   MODULE_MAIL_ID = "bob@nano.mods";
