@@ -15,13 +15,16 @@ module.exports = {
   plugins: [
     new HtmlWebpackPlugin({
       title: "nano-modules",
-      favicon: "assets/favicon.ico",
+      template: "./src/template.index.html",
     }),
     new webpack.DefinePlugin({
       "process.env.NODE_ENV": JSON.stringify("production"),
     }),
     new CopyPlugin({
-      patterns: [{ from: "./assets", to: "assets" }],
+      patterns: [
+        { from: "./assets", to: "assets" },
+        { from: "./src/manifest.json", to: "." }
+      ],
     }),
   ],
   output: {
