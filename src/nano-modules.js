@@ -30,7 +30,7 @@ async function setupMetaModule(module, modid) {
   let moduleName = getTempPlaceholderModuleName(module);
   let moduleDescription = "...";
   let moduleVersion = "...";
-  let moduleOutput = "";
+  let moduleOutput = "...";
   const templateLoading = buildTemplate(
     moduleName,
     moduleDescription,
@@ -127,7 +127,7 @@ function buildTemplate(name, description, version, output, modid) {
         &nbsp;<span class="pulse_dot"></span>
       </span>
       <span class="expander">&nbsp;</span>
-      <span class="bold">Version:</span>
+      <span class="bold">v</span>
       <span id="nano_module_${modid}_version">${version} </span>
     </div>
     <div
@@ -161,6 +161,7 @@ function printLine(modid) {
     const outputContainer = document.getElementById(
       `nano_module_${modid}_output`
     );
+    if (outputContainer.innerText === "...") print(modid)("");
     outputContainer.prepend(newOutput, document.createElement("br"));
   };
 }
