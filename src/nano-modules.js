@@ -224,37 +224,37 @@ async function createFooter() {
 }
 
 async function checkAndUpdateGithubWorkflowStatus() {
-  const STATUS_QUEUED = "queued";
-  const CONCLUSION_SUCCESS = "success";
-  const CONCLUSION_FAILURE = "failure";
-  const { status: nmStatus, conclusion: nmConclusion } =
-    await getWorkflowStatus(WORKFLOW_API_URLS["nano-modules"].build);
-  const nmElem = document.getElementById("workflow-status-nano-modules");
-  nmElem.classList.remove([
-    "workflow-status-success",
-    "workflow-status-failed",
-    "workflow-status-progressing",
-  ]);
-  if (nmConclusion === CONCLUSION_SUCCESS) {
-    nmElem.classList.add("workflow-status-success");
-  } else if (nmConclusion === CONCLUSION_FAILURE) {
-    nmElem.classList.add("workflow-status-failed");
-  } else if (nmStatus === STATUS_QUEUED) {
-    nmElem.classList.add("workflow-status-progressing");
-  }
-  const { status: n_mStatus, conclusion: n_mConclusion } =
-    await getWorkflowStatus(WORKFLOW_API_URLS["nano_modules"].build);
-  const n_mElem = document.getElementById("workflow-status-nano_modules");
-  n_mElem.classList.remove([
-    "workflow-status-success",
-    "workflow-status-failed",
-    "workflow-status-progressing",
-  ]);
-  if (n_mConclusion === CONCLUSION_SUCCESS) {
-    n_mElem.classList.add("workflow-status-success");
-  } else if (n_mConclusion === CONCLUSION_FAILURE) {
-    n_mElem.classList.add("workflow-status-failed");
-  } else if (n_mStatus === STATUS_QUEUED) {
-    n_mElem.classList.add("workflow-status-progressing");
-  }
+  // const STATUS_QUEUED = "queued";
+  // const CONCLUSION_SUCCESS = "success";
+  // const CONCLUSION_FAILURE = "failure";
+  // const { status: nmStatus, conclusion: nmConclusion } =
+  //   await getWorkflowStatus(WORKFLOW_API_URLS["nano-modules"].build);
+  // const nmElem = document.getElementById("workflow-status-nano-modules");
+  // nmElem.classList.remove([
+  //   "workflow-status-success",
+  //   "workflow-status-failed",
+  //   "workflow-status-progressing",
+  // ]);
+  // if (nmConclusion === CONCLUSION_SUCCESS) {
+  //   nmElem.classList.add("workflow-status-success");
+  // } else if (nmConclusion === CONCLUSION_FAILURE) {
+  //   nmElem.classList.add("workflow-status-failed");
+  // } else if (nmStatus === STATUS_QUEUED) {
+  //   nmElem.classList.add("workflow-status-progressing");
+  // }
+  // const { status: n_mStatus, conclusion: n_mConclusion } =
+  //   await getWorkflowStatus(WORKFLOW_API_URLS["nano_modules"].build);
+  // const n_mElem = document.getElementById("workflow-status-nano_modules");
+  // n_mElem.classList.remove([
+  //   "workflow-status-success",
+  //   "workflow-status-failed",
+  //   "workflow-status-progressing",
+  // ]);
+  // if (n_mConclusion === CONCLUSION_SUCCESS) {
+  //   n_mElem.classList.add("workflow-status-success");
+  // } else if (n_mConclusion === CONCLUSION_FAILURE) {
+  //   n_mElem.classList.add("workflow-status-failed");
+  // } else if (n_mStatus === STATUS_QUEUED) {
+  //   n_mElem.classList.add("workflow-status-progressing");
+  // }
 }
