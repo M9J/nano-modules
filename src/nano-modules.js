@@ -123,8 +123,6 @@ function buildTemplate(name, description, version, output, modid) {
 <div class="nano_module_output">
 <span class="bold">Output:</span>
 <span id="nano_module_${modid}_pulse" class="pulse hidden">
-&nbsp;<span class="pulse_dot"></span> 
-&nbsp;<span class="pulse_dot"></span>
 &nbsp;<span class="pulse_dot"></span>
 </span>
 <span class="expander">&nbsp;</span>
