@@ -94,10 +94,6 @@ body {
   animation: pulse ease-in-out 1s infinite;
 }
 
-.pulse_dot:nth-child(even) {
-  animation-direction: reverse;
-}
-
 .hidden {
   display: none;
 }

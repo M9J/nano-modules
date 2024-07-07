@@ -1,11 +1,9 @@
 import "./nano-modules.css";
 import NanoModules from "./app/NanoModules";
-import { getWorkflowStatus, WORKFLOW_API_URLS } from "./app/Github";
 
 const comp = await component();
 document.body.appendChild(comp);
 loadNanoModules();
-checkAndUpdateGithubWorkflowStatus();
 
 const nanoMetaModules = [];
 
@@ -31,7 +29,6 @@ async function loadNanoModules() {
 async function setupMetaModule(module, modid) {
   let moduleName = getTempPlaceholderModuleName(module);
   let moduleDescription = "...";
-  let modulePulse = false;
   let moduleVersion = "...";
   let moduleOutput = "";
   const templateLoading = buildTemplate(
@@ -51,30 +48,30 @@ async function setupMetaModule(module, modid) {
   moduleDescription = instance.MODULE_DESCRIPTION
     ? instance.MODULE_DESCRIPTION
     : "-";
-  modulePulse = instance.MODULE_PULSE || false;
   moduleVersion = instance.MODULE_VERSION ? instance.MODULE_VERSION : "-";
   const moduleMailId = instance.MODULE_MAIL_ID || null;
   const moduleMailHandler = instance.MODULE_MAIL_HANDLER || null;
   instance.MODULE_OUTPUT = createOutputModifiers(modid);
+  if (moduleMailId) instance.MODULE_MAIL = { send: mail.send };
   if (moduleMailId && moduleMailHandler) {
     mail.onReceive(moduleMailId, moduleMailHandler);
-    instance.MODULE_MAIL = { send: mail.send };
   }
   document.getElementById(`nano_module_${modid}_name`).innerHTML = moduleName;
   document.getElementById(`nano_module_${modid}_description`).innerHTML =
     moduleDescription;
   document.getElementById(`nano_module_${modid}_version`).innerHTML =
     moduleVersion;
-  if (modulePulse) {
-    document
-      .getElementById(`nano_module_${modid}_pulse`)
-      .classList.remove("hidden");
-  }
   instance.MODULE_ID = modid;
   nanoMetaModules.push(instance);
 }
 
 async function execModule(module) {
+  const hasPulse = module.MODULE_PULSE || false;
+  if (hasPulse) {
+    document
+      .getElementById(`nano_module_${module.MODULE_ID}_pulse`)
+      .classList.remove("hidden");
+  }
   if (module.MODULE_MAIN && typeof module.MODULE_MAIN === "function") {
     try {
       await module.MODULE_MAIN();
@@ -100,18 +97,6 @@ async function component() {
   const title = document.createElement("div");
   title.classList.add("nano_modules_title");
   title.innerHTML = "NanoModules";
-
-  const workflowStatus = document.createElement("div");
-  const workflow1 = document.createElement("div");
-  workflow1.classList.add("workflow-status");
-  workflow1.id = "workflow-status-nano-modules";
-  workflowStatus.appendChild(workflow1);
-  const workflow2 = document.createElement("div");
-  workflow2.classList.add("workflow-status");
-  workflow2.id = "workflow-status-nano_modules";
-  workflowStatus.appendChild(workflow2);
-
-  title.appendChild(workflowStatus);
 
   const modules = document.createElement("div");
   modules.classList.add("nano_modules_modules");
@@ -155,8 +140,6 @@ function buildTemplate(name, description, version, output, modid) {
   `;
 }
 
-const mail = createMail();
-
 function createOutputModifiers(modid) {
   return {
     print: print(modid),
@@ -182,9 +165,10 @@ function printLine(modid) {
   };
 }
 
-const MAIL_SEND_DELAY = 0;
+const mail = createMail();
 
 function createMail() {
+  const MAIL_SEND_DELAY = 0;
   const recipients = {};
   const onReceive = (mailId, mailHandler) => {
     if (!recipients[mailId]) recipients[mailId] = mailHandler;
@@ -192,8 +176,17 @@ function createMail() {
   const send = (mail) => {
     let tmr = setTimeout(() => {
       clearTimeout(tmr);
-      if (!recipients[mail.to]) console.log(`Recipient not found: ${mail.to}`);
-      else recipients[mail.to](mail);
+      if (Array.isArray(mail.to)) {
+        for (const broadcastTo of mail.to) {
+          if (!recipients[broadcastTo])
+            console.log(`Recipient not found: ${broadcastTo}`);
+          else recipients[broadcastTo](mail);
+        }
+      } else {
+        if (!recipients[mail.to])
+          console.log(`Recipient not found: ${mail.to}`);
+        else recipients[mail.to](mail);
+      }
     }, MAIL_SEND_DELAY);
   };
   return { onReceive, send };
@@ -208,53 +201,15 @@ async function createFooter() {
       <a class="github-badge" href="https://github.com/m9j/nano-modules/actions">
         <div class="github-badge-label">nano-modules</div>
         <div class="github-badge-stage">ACTIONS</div>
-        <!-- <div class="github-badge-status"></div> -->
       </a>
     </div>
     <div class="nano_modules_footer_row">
       <a class="github-badge" href="https://github.com/m9j/nano_modules/actions">
         <div class="github-badge-label">nano_modules</div>
         <div class="github-badge-stage">ACTIONS</div>
-        <!-- <div class="github-badge-status"></div> -->
       </a>
     </div>
   `;
 
   return footer;
-}
-
-async function checkAndUpdateGithubWorkflowStatus() {
-  // const STATUS_QUEUED = "queued";
-  // const CONCLUSION_SUCCESS = "success";
-  // const CONCLUSION_FAILURE = "failure";
-  // const { status: nmStatus, conclusion: nmConclusion } =
-  //   await getWorkflowStatus(WORKFLOW_API_URLS["nano-modules"].build);
-  // const nmElem = document.getElementById("workflow-status-nano-modules");
-  // nmElem.classList.remove([
-  //   "workflow-status-success",
-  //   "workflow-status-failed",
-  //   "workflow-status-progressing",
-  // ]);
-  // if (nmConclusion === CONCLUSION_SUCCESS) {
-  //   nmElem.classList.add("workflow-status-success");
-  // } else if (nmConclusion === CONCLUSION_FAILURE) {
-  //   nmElem.classList.add("workflow-status-failed");
-  // } else if (nmStatus === STATUS_QUEUED) {
-  //   nmElem.classList.add("workflow-status-progressing");
-  // }
-  // const { status: n_mStatus, conclusion: n_mConclusion } =
-  //   await getWorkflowStatus(WORKFLOW_API_URLS["nano_modules"].build);
-  // const n_mElem = document.getElementById("workflow-status-nano_modules");
-  // n_mElem.classList.remove([
-  //   "workflow-status-success",
-  //   "workflow-status-failed",
-  //   "workflow-status-progressing",
-  // ]);
-  // if (n_mConclusion === CONCLUSION_SUCCESS) {
-  //   n_mElem.classList.add("workflow-status-success");
-  // } else if (n_mConclusion === CONCLUSION_FAILURE) {
-  //   n_mElem.classList.add("workflow-status-failed");
-  // } else if (n_mStatus === STATUS_QUEUED) {
-  //   n_mElem.classList.add("workflow-status-progressing");
-  // }
 }
