@@ -1,8 +1,11 @@
 import "./nano-modules.css";
 import NanoModules from "./app/NanoModules";
+import { getWorkflowStatus, WORKFLOW_API_URLS } from "./app/Github";
 
-document.body.appendChild(component());
+const comp = await component();
+document.body.appendChild(comp);
 loadNanoModules();
+checkAndUpdateGithubWorkflowStatus();
 
 const nanoMetaModules = [];
 
@@ -90,13 +93,25 @@ function getTempPlaceholderModuleName(moduleName) {
       .replaceAll('"', "");
 }
 
-function component() {
+async function component() {
   const container = document.createElement("div");
   container.classList.add("nano_modules_container");
 
   const title = document.createElement("div");
   title.classList.add("nano_modules_title");
   title.innerHTML = "NanoModules";
+
+  const workflowStatus = document.createElement("div");
+  const workflow1 = document.createElement("div");
+  workflow1.classList.add("workflow-status");
+  workflow1.id = "workflow-status-nano-modules";
+  workflowStatus.appendChild(workflow1);
+  const workflow2 = document.createElement("div");
+  workflow2.classList.add("workflow-status");
+  workflow2.id = "workflow-status-nano_modules";
+  workflowStatus.appendChild(workflow2);
+
+  title.appendChild(workflowStatus);
 
   const modules = document.createElement("div");
   modules.classList.add("nano_modules_modules");
@@ -105,38 +120,39 @@ function component() {
   container.appendChild(title);
   container.appendChild(modules);
 
-  container.appendChild(createFooter());
+  const footer = await createFooter();
+  container.appendChild(footer);
   return container;
 }
 
 function buildTemplate(name, description, version, output, modid) {
   return `
-<div class="nano_modules_module" id="nano_module_${modid}">
-<div class="nano_module_name">
-<span class="bold">Name:</span>
-<span id="nano_module_${modid}_name">${name}</span>
-</div>
-<div class="nano_module_description">
-<span class="bold">Description:</span>
-<span id="nano_module_${modid}_description">${description}</span>
-</div>
-<div class="nano_module_output">
-<span class="bold">Output:</span>
-<span id="nano_module_${modid}_pulse" class="pulse hidden">
-&nbsp;<span class="pulse_dot"></span>
-</span>
-<span class="expander">&nbsp;</span>
-<span class="bold">Version:</span>
-<span id="nano_module_${modid}_version">${version} </span>
-</div>
-<div
-class="nano_module_output_restricted_scrollable"
-id="nano_module_${modid}_output"
->
-${output}
-</div>
-</div>
-`;
+  <div class="nano_modules_module" id="nano_module_${modid}">
+    <div class="nano_module_name">
+      <span class="bold">Name:</span>
+      <span id="nano_module_${modid}_name">${name}</span>
+    </div>
+    <div class="nano_module_description">
+      <span class="bold">Description:</span>
+      <span id="nano_module_${modid}_description">${description}</span>
+    </div>
+    <div class="nano_module_output">
+      <span class="bold">Output:</span>
+      <span id="nano_module_${modid}_pulse" class="pulse hidden">
+        &nbsp;<span class="pulse_dot"></span>
+      </span>
+      <span class="expander">&nbsp;</span>
+      <span class="bold">Version:</span>
+      <span id="nano_module_${modid}_version">${version} </span>
+    </div>
+    <div
+      class="nano_module_output_restricted_scrollable"
+      id="nano_module_${modid}_output"
+    >
+      ${output}
+    </div>
+  </div>
+  `;
 }
 
 const mail = createMail();
@@ -183,7 +199,7 @@ function createMail() {
   return { onReceive, send };
 }
 
-function createFooter() {
+async function createFooter() {
   const footer = document.createElement("div");
   footer.classList.add("nano_modules_footer");
 
@@ -192,17 +208,53 @@ function createFooter() {
       <a class="github-badge" href="https://github.com/m9j/nano-modules/actions">
         <div class="github-badge-label">nano-modules</div>
         <div class="github-badge-stage">ACTIONS</div>
-        <div class="github-badge-status">PASSED</div>
+        <!-- <div class="github-badge-status"></div> -->
       </a>
     </div>
     <div class="nano_modules_footer_row">
       <a class="github-badge" href="https://github.com/m9j/nano_modules/actions">
         <div class="github-badge-label">nano_modules</div>
         <div class="github-badge-stage">ACTIONS</div>
-        <div class="github-badge-status">PASSED</div>
+        <!-- <div class="github-badge-status"></div> -->
       </a>
     </div>
   `;
 
   return footer;
+}
+
+async function checkAndUpdateGithubWorkflowStatus() {
+  const STATUS_QUEUED = "queued";
+  const CONCLUSION_SUCCESS = "success";
+  const CONCLUSION_FAILURE = "failure";
+  const { status: nmStatus, conclusion: nmConclusion } =
+    await getWorkflowStatus(WORKFLOW_API_URLS["nano-modules"].build);
+  const nmElem = document.getElementById("workflow-status-nano-modules");
+  nmElem.classList.remove([
+    "workflow-status-success",
+    "workflow-status-failed",
+    "workflow-status-progressing",
+  ]);
+  if (nmConclusion === CONCLUSION_SUCCESS) {
+    nmElem.classList.add("workflow-status-success");
+  } else if (nmConclusion === CONCLUSION_FAILURE) {
+    nmElem.classList.add("workflow-status-failed");
+  } else if (nmStatus === STATUS_QUEUED) {
+    nmElem.classList.add("workflow-status-progressing");
+  }
+  const { status: n_mStatus, conclusion: n_mConclusion } =
+    await getWorkflowStatus(WORKFLOW_API_URLS["nano_modules"].build);
+  const n_mElem = document.getElementById("workflow-status-nano_modules");
+  n_mElem.classList.remove([
+    "workflow-status-success",
+    "workflow-status-failed",
+    "workflow-status-progressing",
+  ]);
+  if (n_mConclusion === CONCLUSION_SUCCESS) {
+    n_mElem.classList.add("workflow-status-success");
+  } else if (n_mConclusion === CONCLUSION_FAILURE) {
+    n_mElem.classList.add("workflow-status-failed");
+  } else if (n_mStatus === STATUS_QUEUED) {
+    n_mElem.classList.add("workflow-status-progressing");
+  }
 }

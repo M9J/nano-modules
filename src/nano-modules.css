@@ -35,6 +35,9 @@ body {
   position: sticky;
   top: 0;
   z-index: 1;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 }
 
 .nano_modules_modules {
@@ -149,6 +152,28 @@ body {
 .github-badge-status {
   padding: 4px 8px;
   background-color: green;
+}
+
+.workflow-status {
+  content: "";
+  width: 8px;
+  height: 8px;
+  border-radius: 100px;
+  display: inline-block;
+  background-color: #333;
+  margin-left: 8px;
+}
+
+.workflow-status-progressing {
+  background-color: goldenrod;
+}
+
+.workflow-status-failed {
+  background-color: red;
+}
+
+.workflow-status-success {
+  background-color: greenyellow;
 }
 
 @keyframes pulse {
