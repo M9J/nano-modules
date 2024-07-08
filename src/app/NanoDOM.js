@@ -1,4 +1,4 @@
-export default class Dom {
+export default class NanoDOM {
   createDomElement({ tag, className, id, innerHTML }) {
     if (tag) {
       const elem = document.createElement(tag);

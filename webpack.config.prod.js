@@ -15,7 +15,7 @@ module.exports = {
   plugins: [
     new HtmlWebpackPlugin({
       title: "nano-modules",
-      template: "./src/template.index.html",
+      template: "./src/nano-modules.html",
     }),
     new webpack.DefinePlugin({
       "process.env.NODE_ENV": JSON.stringify("production"),
