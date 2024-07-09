@@ -1,36 +1,45 @@
 export default class NanoDOM {
-  tag = "div";
-  id = null;
-  classList = [];
-  innerHTML = "";
-  
+  node = document.createElement("div");
+
   constructor(tag) {
-    this.tag = tag;
-  }
-  
-  setId(id) {
-    if(id) {
-      this.id = id;
+    if (tag) {
+      this.node = document.createElement(tag);
     }
   }
-  
+
+  get node() {
+    return this.node;
+  }
+
+  toString() {
+    return this.node;
+  }
+
+  appendChild(child) {
+    this.node.appendChild(child);
+  }
+
+  setId(id) {
+    if (id) {
+      this.node.id = id;
+    }
+  }
+
   setInnerHTML(innerHTML) {
     if (innerHTML) {
-      this.innerHTML = innerHTML;
+      this.node.innerHTML = innerHTML;
     }
   }
-  
+
   addClass(className) {
-    if (!this.classList.includes(className)) {
-      this.classList.push(className);
+    if (className) {
+      this.node.classList.add(className);
     }
   }
-  
+
   removeClass(className) {
-    if(this.classList.includes(className)) {
-      this.classList = this.classList.filter(c => c !== className);
+    if (className) {
+      this.node.classList.remove(className);
     }
   }
-  
-  
 }
