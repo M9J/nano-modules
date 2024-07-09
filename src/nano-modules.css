@@ -53,10 +53,32 @@ body {
 
 .nano_modules_module {
   box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.25);
-  padding: 8px;
   border: 1px solid rgba(0, 0, 0, 0.1);
   background: #fff;
   color: #000;
+  display: flex;
+  flex-direction: column;
+}
+
+.nano_module_name,
+.nano_module_description,
+.nano_module_output {
+  padding: 0 8px;
+}
+
+.nano_module_name {
+  padding-top: 8px;
+}
+
+.nano_module_output {
+  padding-bottom: 8px;
+}
+
+.nano_module_output_container {
+  flex: 1;
+  padding: 8px;
+  background-color: #000;
+  color: #fff;
 }
 
 .nano_modules_no_modules {
@@ -81,6 +103,7 @@ body {
 .pulse {
   display: flex;
   align-items: center;
+  padding: 0 8px;
 }
 
 .pulse_dot {

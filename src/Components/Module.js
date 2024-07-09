@@ -27,7 +27,7 @@ export default class Module extends NanoDOM {
     const moduleName = new NanoDOM("div");
     moduleName.addClass("nano_module_name");
     const boldLabel = new NanoDOM("b");
-    boldLabel.setInnerHTML("Name:");
+    boldLabel.setInnerHTML("Name: ");
     const value = new NanoDOM("span");
     value.setId(`nano_module_${this.#modid}_name`);
     moduleName.appendChild(boldLabel.node);
@@ -39,7 +39,7 @@ export default class Module extends NanoDOM {
     const moduleDescription = new NanoDOM("div");
     moduleDescription.addClass("nano_module_description");
     const boldLabel = new NanoDOM("b");
-    boldLabel.setInnerHTML("Description:");
+    boldLabel.setInnerHTML("Description: ");
     const value = new NanoDOM("span");
     value.setId(`nano_module_${this.#modid}_description`);
     moduleDescription.appendChild(boldLabel.node);
@@ -51,13 +51,12 @@ export default class Module extends NanoDOM {
     const moduleOutputLabelRow = new NanoDOM("div");
     moduleOutputLabelRow.addClass("nano_module_output");
     const boldLabel = new NanoDOM("b");
-    boldLabel.setInnerHTML("Output:");
+    boldLabel.setInnerHTML("Output: ");
     moduleOutputLabelRow.appendChild(boldLabel.node);
     const pulse = new NanoDOM("span");
     pulse.setId(`nano_module_${this.#modid}_pulse`);
     pulse.addClass("pulse");
     pulse.addClass("hidden");
-    pulse.setInnerHTML("&nbsp;");
     const pulseDot = new NanoDOM("span");
     pulseDot.addClass("pulse_dot");
     pulse.appendChild(pulseDot.node);
@@ -75,10 +74,13 @@ export default class Module extends NanoDOM {
   }
 
   getModuleOutputTemplate() {
+    const moduleOutputContainer = new NanoDOM("div");
+    moduleOutputContainer.addClass("nano_module_output_container");
     const moduleOutput = new NanoDOM("div");
     moduleOutput.addClass("nano_module_output_restricted_scrollable");
     moduleOutput.setId(`nano_module_${this.#modid}_output`);
-    return moduleOutput.node;
+    moduleOutputContainer.appendChild(moduleOutput.node);
+    return moduleOutputContainer.node;
   }
 
   #updateValue(elemId, value) {
