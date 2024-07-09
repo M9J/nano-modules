@@ -38,12 +38,8 @@ async function fetchNanoModules() {
   try {
     const importedModule = await getNanoModule();
     if (importedModule) {
-      let NanoModulesIndex = [];
-      let NanoModuleLoader = () => {};
-      if (importedModule) {
-        NanoModuleLoader = importedModule.ModuleLoader;
-        NanoModulesIndex = importedModule.MODULES;
-      }
+      let NanoModuleLoader = importedModule.ModuleLoader;
+      let NanoModulesIndex = importedModule.MODULES;
       return { NanoModuleLoader, NanoModulesIndex };
     }
   } catch (e) {
