@@ -1,12 +1,13 @@
-export default [
-  () => import("./Examples/Classroom/Teacher/Teacher.js"),
-  () => import("./Examples/Classroom/Student/Student1.js"),
-  () => import("./Examples/Classroom/Student/Student2.js"),
-  () => import("./Examples/SenderReceiver/Bob/Bob.js"),
-  () => import("./Examples/SenderReceiver/Alice/Alice.js"),
-  () => import("./Examples/SenderReceiver/Celine/Celine.js"),
-  () => import("./Examples/Logger/Logger.js"),
-  () => import("./Examples/Counter/Counter.js"),
-  () => import("./Examples/TodayDate/TodayDate.js"),
-  () => import("./Examples/HelloWorld/HelloWorld.js"),
+export const ModuleLoader = (m) => import(m);
+export const MODULES = [
+  "./Examples/Classroom/Teacher/Teacher.js",
+  "./Examples/Classroom/Student/Student1.js",
+  "./Examples/Classroom/Student/Student2.js",
+  "./Examples/SenderReceiver/Bob/Bob.js",
+  "./Examples/SenderReceiver/Alice/Alice.js",
+  "./Examples/SenderReceiver/Celine/Celine.js",
+  "./Examples/Logger/Logger.js",
+  "./Examples/Counter/Counter.js",
+  "./Examples/TodayDate/TodayDate.js",
+  "./Examples/HelloWorld/HelloWorld.js",
 ];

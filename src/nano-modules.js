@@ -8,17 +8,18 @@ loadNanoModules();
 const nanoMetaModules = [];
 
 async function loadNanoModules() {
-  const nanoModules = await NanoModules();
-  if (nanoModules) {
+  const { NanoModuleLoader, NanoModulesIndex } = await NanoModules();
+  if (NanoModulesIndex) {
     const nanoModulesModuleContainer = document.getElementById(
       "nano_modules_modules"
     );
-    if (nanoModules.length > 0) nanoModulesModuleContainer.innerHTML = "";
+    if (NanoModulesIndex.length > 0) nanoModulesModuleContainer.innerHTML = "";
     else
       nanoModulesModuleContainer.innerHTML =
         "<div class='nano_modules_no_modules'>No Modules found</div>";
-    for (const [modid, module] of nanoModules.entries()) {
-      if (module) await setupMetaModule(module, modid);
+    for (const [modid, module] of NanoModulesIndex.entries()) {
+      const nanoModule = await NanoModuleLoader(module);
+      if (nanoModule) await setupMetaModule(nanoModule, modid);
     }
     for (const module of nanoMetaModules) {
       if (module) await execModule(module);
@@ -27,7 +28,7 @@ async function loadNanoModules() {
 }
 
 async function setupMetaModule(module, modid) {
-  let moduleName = getTempPlaceholderModuleName(module);
+  let moduleName = module.default.name;
   let moduleDescription = "...";
   let moduleVersion = "...";
   let moduleOutput = "...";
@@ -42,8 +43,7 @@ async function setupMetaModule(module, modid) {
     "nano_modules_modules"
   );
   nanoModulesModuleContainer.innerHTML += templateLoading;
-  const moduleClass = await module();
-  const instance = new moduleClass.default();
+  const instance = new module.default();
   moduleName = instance.MODULE_NAME ? instance.MODULE_NAME : "-";
   moduleDescription = instance.MODULE_DESCRIPTION
     ? instance.MODULE_DESCRIPTION
@@ -79,15 +79,6 @@ async function execModule(module) {
       module.MODULE_OUTPUT.print(`ERROR: ${error.code}: ${error.message}`);
     }
   }
-}
-
-function getTempPlaceholderModuleName(moduleName) {
-  if (moduleName)
-    return moduleName
-      .toString()
-      .replaceAll("() => import(", "")
-      .replaceAll(")", "")
-      .replaceAll('"', "");
 }
 
 async function component() {

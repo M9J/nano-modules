@@ -3,15 +3,15 @@ export default async function () {
   const NANOMODULES = [];
 
   try {
-    const MODULE_INDEX = await getModuleIndex();
-    if (MODULE_INDEX) {
-      const MODULES = MODULE_INDEX.default;
-      const hasModules = Array.isArray(MODULES) ? MODULES.length > 0 : false;
-      if (hasModules) {
-        for (const MODULE of MODULES) {
-          NANOMODULES.push(MODULE);
-        }
+    const importedModule = await getNanoModule();
+    if (importedModule) {
+      let NanoModulesIndex = [];
+      let NanoModuleLoader = () => {};
+      if (importedModule) {
+        NanoModuleLoader = importedModule.ModuleLoader;
+        NanoModulesIndex = importedModule.MODULES;
       }
+      return { NanoModuleLoader, NanoModulesIndex };
     }
   } catch (e) {
     const { code, message } = e;
@@ -24,22 +24,22 @@ export default async function () {
 const NANOMODULES_URL_DEV = "../nano_modules/index.js";
 const NANOMODULES_URL_PROD = "https://M9J.github.io/nano_modules/index.js";
 
-async function getModuleIndex() {
+async function getNanoModule() {
   try {
-    let NanoModulesIndex = [];
+    let importedModule = null;
     const IS_PRODUCTION = process.env.NODE_ENV === "production";
     if (IS_PRODUCTION) {
-      NanoModulesIndex = await import(
+      importedModule = await import(
         /* webpackIgnore: true */
         NANOMODULES_URL_PROD
       );
     } else {
-      NanoModulesIndex = await import(
+      importedModule = await import(
         /* webpackIgnore: true */
         NANOMODULES_URL_DEV
       );
     }
-    return NanoModulesIndex;
+    return importedModule;
   } catch (e) {
     console.log(e);
   }
