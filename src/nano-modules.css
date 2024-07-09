@@ -97,6 +97,11 @@ body {
 .nano_module_output_restricted_scrollable {
   max-height: 93px;
   overflow: auto;
+  position: relative;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
 }
 
 .pulse {
