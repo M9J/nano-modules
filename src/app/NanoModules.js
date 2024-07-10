@@ -42,13 +42,13 @@ async function getNanoModuleIndex() {
   try {
     let currentURL = getNanoModulesURL();
     currentURL += "index.js";
-    return await loadToLocal(currentURL);
+    return await fetchFile(currentURL);
   } catch (e) {
     console.log(e);
   }
 }
 
-async function loadToLocal(path) {
+async function fetchFile(path) {
   return await import(
     /* webpackIgnore: true */
     path
@@ -73,7 +73,7 @@ async function setupMetaModule(modid, modulePath) {
   module.updateVersion(moduleVersion);
   module.updateOutput(moduleOutput);
   const actualPath = getNanoModulesURL() + modulePath.substring(2);
-  const importedModule = await await loadToLocal(actualPath);
+  const importedModule = await await fetchFile(actualPath);
   const instance = new importedModule.default();
   moduleName = instance.MODULE_NAME ? instance.MODULE_NAME : "-";
   moduleDescription = instance.MODULE_DESCRIPTION
