@@ -1,4 +1,3 @@
-export const ModuleLoader = (m) => import(m);
 export const MODULES = [
   "./Examples/Classroom/Teacher/Teacher.js",
   "./Examples/Classroom/Student/Student1.js",

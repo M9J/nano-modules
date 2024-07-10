@@ -1,5 +1,5 @@
 import NanoModules from "./app/NanoModules";
-import AppContainer from "./Components/AppContainer";
+import AppContainer from "./components/AppContainer";
 import "./nano-modules.css";
 
 const app = new AppContainer();

@@ -1,16 +1,16 @@
-import Module from "../Components/Module";
-import Modules from "../Components/Modules";
+import Module from "../components/Module";
+import Modules from "../components/Modules";
 import NanoMail from "./NanoMail";
 import NanoOutput from "./NanoOutput";
 
-const NANOMODULES_URL_DEV = "../nano_modules/index.js";
-const NANOMODULES_URL_PROD = "https://M9J.github.io/nano_modules/index.js";
+const NANOMODULES_URL_DEV = "../nano_modules/";
+const NANOMODULES_URL_PROD = "https://M9J.github.io/nano_modules/";
 const METAMODULES = [];
-const nanoMail = new NanoMail();
+const NANOMAIL = new NanoMail();
 
 export default async function () {
   console.log("> Nanomod.js _");
-  const { NanoModuleLoader, NanoModulesIndex } = await fetchNanoModules();
+  const NanoModulesIndex = await fetchNanoModules();
   if (NanoModulesIndex) {
     const nanoModulesModuleContainer = document.getElementById(
       "nano_modules_modules"
@@ -20,11 +20,7 @@ export default async function () {
       nanoModulesModuleContainer.innerHTML =
         "<div class='nano_modules_no_modules'>No Modules found</div>";
     for (const [modid, nanoModulePath] of NanoModulesIndex.entries()) {
-      if (nanoModulePath)
-        await setupMetaModule(modid, {
-          modulePath: nanoModulePath,
-          moduleLoader: NanoModuleLoader,
-        });
+      if (nanoModulePath) await setupMetaModule(modid, nanoModulePath);
     }
     for (const module of METAMODULES) {
       if (module) await execModule(module);
@@ -33,45 +29,39 @@ export default async function () {
 }
 
 async function fetchNanoModules() {
-  const NANOMODULES = [];
-
   try {
-    const importedModule = await getNanoModule();
-    if (importedModule) {
-      let NanoModuleLoader = importedModule.ModuleLoader;
-      let NanoModulesIndex = importedModule.MODULES;
-      return { NanoModuleLoader, NanoModulesIndex };
-    }
+    const importedModule = await getNanoModuleIndex();
+    if (importedModule) return importedModule.MODULES;
   } catch (e) {
     const { code, message } = e;
     console.log(`${code}: ${message}`);
   }
-
-  return NANOMODULES;
 }
 
-async function getNanoModule() {
+async function getNanoModuleIndex() {
   try {
-    let importedModule = null;
-    const IS_PRODUCTION = process.env.NODE_ENV === "production";
-    if (IS_PRODUCTION) {
-      importedModule = await import(
-        /* webpackIgnore: true */
-        NANOMODULES_URL_PROD
-      );
-    } else {
-      importedModule = await import(
-        /* webpackIgnore: true */
-        NANOMODULES_URL_DEV
-      );
-    }
-    return importedModule;
+    let currentURL = getNanoModulesURL();
+    currentURL += "index.js";
+    return await loadToLocal(currentURL);
   } catch (e) {
     console.log(e);
   }
 }
 
-async function setupMetaModule(modid, { modulePath, moduleLoader }) {
+async function loadToLocal(path) {
+  return await import(
+    /* webpackIgnore: true */
+    path
+  );
+}
+
+function getNanoModulesURL() {
+  const IS_PRODUCTION = process.env.NODE_ENV === "production";
+  if (IS_PRODUCTION) return NANOMODULES_URL_PROD;
+  else return NANOMODULES_URL_DEV;
+}
+
+async function setupMetaModule(modid, modulePath) {
   let moduleName = modulePath;
   let moduleDescription = "...";
   let moduleVersion = "...";
@@ -82,7 +72,8 @@ async function setupMetaModule(modid, { modulePath, moduleLoader }) {
   module.updateDescription(moduleDescription);
   module.updateVersion(moduleVersion);
   module.updateOutput(moduleOutput);
-  const importedModule = await moduleLoader(modulePath);
+  const actualPath = getNanoModulesURL() + modulePath.substring(2);
+  const importedModule = await await loadToLocal(actualPath);
   const instance = new importedModule.default();
   moduleName = instance.MODULE_NAME ? instance.MODULE_NAME : "-";
   moduleDescription = instance.MODULE_DESCRIPTION
@@ -92,9 +83,9 @@ async function setupMetaModule(modid, { modulePath, moduleLoader }) {
   const moduleMailId = instance.MODULE_MAIL_ID || null;
   const moduleMailHandler = instance.MODULE_MAIL_HANDLER || null;
   instance.MODULE_OUTPUT = new NanoOutput(modid);
-  if (moduleMailId) instance.MODULE_MAIL = { send: (m) => nanoMail.send(m) };
+  if (moduleMailId) instance.MODULE_MAIL = { send: (m) => NANOMAIL.send(m) };
   if (moduleMailId && moduleMailHandler) {
-    nanoMail.onReceive(moduleMailId, moduleMailHandler);
+    NANOMAIL.onReceive(moduleMailId, moduleMailHandler);
   }
   module.updateName(moduleName);
   module.updateDescription(moduleDescription);
