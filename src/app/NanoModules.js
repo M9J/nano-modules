@@ -73,7 +73,7 @@ async function setupMetaModule(modid, modulePath) {
   module.updateVersion(moduleVersion);
   module.updateOutput(moduleOutput);
   const actualPath = getNanoModulesURL() + modulePath.substring(2);
-  const importedModule = await await fetchFile(actualPath);
+  const importedModule = await fetchFile(actualPath);
   const instance = new importedModule.default();
   moduleName = instance.MODULE_NAME ? instance.MODULE_NAME : "-";
   moduleDescription = instance.MODULE_DESCRIPTION
