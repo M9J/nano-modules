@@ -1,5 +1,5 @@
-import Module from "../ccomponents/Module";
-import Modules from "../ccomponents/Modules";
+import Module from "../components/Module";
+import Modules from "../components/Modules";
 import NanoMail from "./NanoMail";
 import NanoOutput from "./NanoOutput";
 
