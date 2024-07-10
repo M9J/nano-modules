@@ -22,4 +22,10 @@ export default class NanoOutput {
     if (outputContainer.innerText === "...") this.print("");
     outputContainer.prepend(newOutput, document.createElement("br"));
   }
+
+  printElement(element) {
+    const outputContainer = this.#getOutputContainer();
+    if (outputContainer.innerText === "...") this.print("");
+    outputContainer.appendChild(element);
+  }
 }

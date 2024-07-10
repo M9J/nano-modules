@@ -1,5 +1,5 @@
-// Provide all modules path below
 export const MODULES = [
+  "./Examples/Prompt/Name.js",
   "./Examples/Classroom/Teacher/Teacher.js",
   "./Examples/Classroom/Student/Student1.js",
   "./Examples/Classroom/Student/Student2.js",
