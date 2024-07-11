@@ -3,15 +3,13 @@ export default class Name {
   MODULE_DESCRIPTION = "Prompts for name";
   MODULE_VERSION = "1.0";
   MODULE_MAIN = () => {
-    const nameInput = document.createElement("input");
-    nameInput.type = "text";
-    nameInput.onchange = this.onChange.bind(this);
-    console.log(nameInput);
-    this.MODULE_OUTPUT.printElement(nameInput);
+    this.promptForName();
   };
 
-  onChange(e) {
-    const name = e.target.value;
-    this.MODULE_OUTPUT.print(`Name: ${name}`);
+  async promptForName() {
+    this.MODULE_OUTPUT.hide();
+    const name = await this.MODULE_OUTPUT.prompt("Name", true);
+    this.MODULE_OUTPUT.show();
+    this.MODULE_OUTPUT.printLine(`Hi ${name}`);
   }
 }

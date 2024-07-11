@@ -77,7 +77,6 @@ body {
 
 .nano_module_output_container {
   flex: 1;
-  padding: 8px;
   background-color: #000;
   color: #fff;
 }
@@ -104,6 +103,7 @@ body {
   right: 0;
   bottom: 0;
   left: 0;
+  padding: 8px;
 }
 
 .pulse {
@@ -128,6 +128,27 @@ body {
 .expander {
   display: inline-block;
   width: 100%;
+}
+
+.nano_module_output_prompt {
+  display: flex;
+  background-color: #fff;
+  border-top: 1px solid rgba(0, 0, 0, 0.2);
+}
+
+.nano_module_output_prompt input {
+  flex: 1;
+  padding: 8px;
+  border: 0;
+  outline: 0;
+}
+
+.nano_module_output_prompt button {
+  padding: 8px 16px;
+  border: 0;
+  border: 1px solid rgba(0, 0, 0, 0.25);
+  margin: 8px;
+  border-radius: 8px;
 }
 
 .nano_modules_footer {

@@ -76,6 +76,7 @@ export default class Module extends NanoDOM {
   getModuleOutputTemplate() {
     const moduleOutputContainer = new NanoDOM("div");
     moduleOutputContainer.addClass("nano_module_output_container");
+    moduleOutputContainer.setId(`nano_module_${this.#modid}_output_container`);
     const moduleOutput = new NanoDOM("div");
     moduleOutput.addClass("nano_module_output_restricted_scrollable");
     moduleOutput.setId(`nano_module_${this.#modid}_output`);

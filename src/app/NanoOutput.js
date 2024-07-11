@@ -28,4 +28,44 @@ export default class NanoOutput {
     if (outputContainer.innerText === "...") this.print("");
     outputContainer.appendChild(element);
   }
+
+  prompt(placeholder, isValueRequired = false) {
+    return new Promise((resolve) => {
+      const promptTemplate = document.createElement("div");
+      promptTemplate.classList.add("nano_module_output_prompt");
+      const input = document.createElement("input");
+      input.type = "text";
+      input.placeholder = `${placeholder}? (Required)`;
+      promptTemplate.appendChild(input);
+      const button = document.createElement("button");
+      button.type = "button";
+      button.innerHTML = "OK";
+      button.onclick = () => {
+        const value = input.value;
+        const canProceed = !(isValueRequired && value.length === 0);
+        if (canProceed) {
+          resolve(input.value);
+          const container = document.getElementById(
+            `nano_module_${this.#modid}_output_container`
+          );
+          container.removeChild(promptTemplate);
+        }
+      };
+      promptTemplate.appendChild(button);
+      const container = document.getElementById(
+        `nano_module_${this.#modid}_output_container`
+      );
+      container.prepend(promptTemplate);
+    });
+  }
+
+  hide() {
+    const container = this.#getOutputContainer();
+    container.classList.add("hidden");
+  }
+
+  show() {
+    const container = this.#getOutputContainer();
+    container.classList.remove("hidden");
+  }
 }
