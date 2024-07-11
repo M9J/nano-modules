@@ -7,9 +7,7 @@ export default class Name {
   };
 
   async promptForName() {
-    this.MODULE_OUTPUT.hide();
     const name = await this.MODULE_OUTPUT.prompt("Name", true);
-    this.MODULE_OUTPUT.show();
     this.MODULE_OUTPUT.printLine(`Hi ${name}`);
   }
 }

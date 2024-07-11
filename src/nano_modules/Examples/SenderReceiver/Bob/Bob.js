@@ -8,13 +8,13 @@ export default class Bob {
     this.MODULE_OUTPUT.printLine(`${from}: ${message}: ${data.value}`);
     if (message === "+3") {
       data.value = data.value + 3;
+      this.MODULE_MAIL.send({
+        from: this.MODULE_MAIL_ID,
+        to: "alice@nano.mods",
+        message: "+1",
+        data: data,
+      });
     }
-    this.MODULE_MAIL.send({
-      from: this.MODULE_MAIL_ID,
-      to: "alice@nano.mods",
-      message: "+1",
-      data: data,
-    });
   };
 
   MODULE_MAIN = () => {

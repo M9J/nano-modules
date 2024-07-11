@@ -1,4 +1,5 @@
 export const MODULES = [
+  "./Examples/Prompt/Mailer.js",
   "./Examples/Prompt/Name.js",
   "./Examples/Classroom/Teacher/Teacher.js",
   "./Examples/Classroom/Student/Student1.js",

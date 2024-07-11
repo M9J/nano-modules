@@ -8,12 +8,12 @@ export default class Celine {
     this.MODULE_OUTPUT.printLine(`${from}: ${message}: ${data.value}`);
     if (message === "+2") {
       data.value = data.value + 2;
+      this.MODULE_MAIL.send({
+        from: this.MODULE_MAIL_ID,
+        to: "bob@nano.mods",
+        message: "+3",
+        data: data,
+      });
     }
-    this.MODULE_MAIL.send({
-      from: this.MODULE_MAIL_ID,
-      to: "bob@nano.mods",
-      message: "+3",
-      data: data,
-    });
   };
 }
