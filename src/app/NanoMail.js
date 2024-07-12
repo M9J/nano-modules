@@ -11,18 +11,25 @@ export default class NanoMail {
   }
 
   send(mail) {
+    let isSent = false;
     let tmr = setTimeout(() => {
       clearTimeout(tmr);
       if (Array.isArray(mail.to)) {
         for (const broadcastTo of mail.to) {
           if (!this.RECIPIENTS[broadcastTo])
             console.log(`Recipient not found: ${broadcastTo}`);
-          else this.RECIPIENTS[broadcastTo](mail);
+          else {
+            this.RECIPIENTS[broadcastTo](mail);
+            isSent = true;
+          }
         }
       } else {
         if (!this.RECIPIENTS[mail.to])
           console.log(`Recipient not found: ${mail.to}`);
-        else this.RECIPIENTS[mail.to](mail);
+        else {
+          this.RECIPIENTS[mail.to](mail);
+          isSent = true;
+        }
       }
     }, this.MAIL_SEND_DELAY);
   }
