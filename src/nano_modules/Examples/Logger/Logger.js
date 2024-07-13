@@ -7,6 +7,6 @@ export default class Logger {
     let line = 0;
     setInterval(() => {
       this.MODULE_OUTPUT.printLine(`Log line ${++line}`);
-    }, 1000);
+    }, 0);
   };
 }

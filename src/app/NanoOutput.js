@@ -17,6 +17,15 @@ export default class NanoOutput {
     container.innerHTML = newOutput;
   }
 
+  // print_v2(newOutput) {
+  //   const canvas = this.#getOutputContainer();
+  //   const ctx = canvas.getContext("2d");
+  //   ctx.clearRect(0, 0, canvas.width, canvas.height);
+  //   ctx.fillStyle = "#fff";
+  //   ctx.font = "12px monospace";
+  //   ctx.fillText(newOutput, 0, 10);
+  // }
+
   printLine(newOutput) {
     const outputContainer = this.#getOutputContainer();
     if (outputContainer.innerText === "...") this.print("");

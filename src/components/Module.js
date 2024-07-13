@@ -81,6 +81,10 @@ export default class Module extends NanoDOM {
     moduleOutput.addClass("nano_module_output_restricted_scrollable");
     moduleOutput.setId(`nano_module_${this.#modid}_output`);
     moduleOutputContainer.appendChild(moduleOutput.node);
+    // const moduleOutput = new NanoDOM("canvas");
+    // moduleOutput.addClass("nano_module_output_restricted_scrollable");
+    // moduleOutput.setId(`nano_module_${this.#modid}_output`);
+    // moduleOutputContainer.appendChild(moduleOutput.node);
     return moduleOutputContainer.node;
   }
 
@@ -112,6 +116,12 @@ export default class Module extends NanoDOM {
   updateOutput(output) {
     if (output !== null) {
       this.#updateValue(`nano_module_${this.#modid}_output`, output);
+      // const container = document.getElementById(
+      //   `nano_module_${this.#modid}_output`
+      // );
+      // const ctx = container.getContext("2d");
+      // ctx.font = "1em monospace";
+      // ctx.fillText(output, 10, 40);
     }
   }
 
