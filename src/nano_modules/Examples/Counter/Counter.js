@@ -6,10 +6,10 @@ export default class Counter {
   MODULE_MAIN = () => this.count();
 
   count() {
-    let c = 0;
+    let c = 0, delay = 0;
     setInterval(() => {
       this.MODULE_OUTPUT.print(++c);
-    }, 1000);
+    }, delay);
     return c;
   }
 }

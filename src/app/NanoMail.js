@@ -6,13 +6,21 @@ export default class NanoMail {
     if (delay) this.MAIL_SEND_DELAY = delay;
   }
 
+  #delyed(fn) {
+    if (fn && typeof fn === "function") {
+      let tmr = setTimeout(() => {
+        clearTimeout(tmr);
+        fn();
+      }, this.MAIL_SEND_DELAY);
+    }
+  }
+
   onReceive(mailId, mailHandler) {
     if (!this.RECIPIENTS[mailId]) this.RECIPIENTS[mailId] = mailHandler;
   }
 
   send_v1(mail) {
-    let tmr = setTimeout(() => {
-      clearTimeout(tmr);
+    this.#delyed(() => {
       if (Array.isArray(mail.to)) {
         for (const broadcastTo of mail.to) {
           if (!this.RECIPIENTS[broadcastTo])
@@ -28,30 +36,24 @@ export default class NanoMail {
           this.RECIPIENTS[mail.to](mail);
         }
       }
-    }, this.MAIL_SEND_DELAY);
+    });
   }
-  
+
   send(mail) {
-    return new Promise((res, rej) => {
+    this.#delyed(() => {
       if (Array.isArray(mail.to)) {
         for (const broadcastTo of mail.to) {
-          if (!this.RECIPIENTS[broadcastTo]) {
+          if (!this.RECIPIENTS[broadcastTo])
             console.log(`Recipient not found: ${broadcastTo}`);
-            rej(false);
-          }
           else {
             this.RECIPIENTS[broadcastTo](mail);
-            res(true);
           }
         }
       } else {
-        if (!this.RECIPIENTS[mail.to]) {
+        if (!this.RECIPIENTS[mail.to])
           console.log(`Recipient not found: ${mail.to}`);
-          rej(false);
-        }
         else {
           this.RECIPIENTS[mail.to](mail);
-          res(true);
         }
       }
     });
